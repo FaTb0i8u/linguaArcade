@@ -10,9 +10,11 @@
  *   "hi / bye (informal)"  → accept "hi", "bye", "hi / bye"
  *   "one (1)"              → accept "one", "1"
  *   "cold (illness)"       → accept "cold"
- *   "to wash (oneself)"    → accept "to wash"
+ *   "to wash (oneself)"    → accept "to wash", "wash"
  *   "I'm sorry (formal)"   → accept "I'm sorry"
  *   "goodbye (to someone leaving)" → accept "goodbye"
+ *   "to share"             → accept "share", "to share"
+ *   "to eat / to drink"    → accept "eat", "drink", "to eat", "to drink"
  */
 
 /**
@@ -66,6 +68,17 @@ export function getAcceptableAnswers(translation: string): string[] {
       if (piece) answers.add(norm(piece));
     }
   }
+
+  // Strip "to " prefix from verb infinitives.
+  // "to share" → also accept "share"; "to eat" → "eat".
+  // Applied to every answer already collected so far.
+  const withoutTo = new Set<string>();
+  for (const a of answers) {
+    if (a.startsWith('to ') && a.length > 3) {
+      withoutTo.add(a.slice(3));
+    }
+  }
+  for (const a of withoutTo) answers.add(a);
 
   return [...answers];
 }

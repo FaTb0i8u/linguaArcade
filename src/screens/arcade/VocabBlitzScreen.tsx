@@ -18,6 +18,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { ArcadeStackParamList, AnsweredItem, GameSessionResult, VocabWord } from '../../types';
 import { getLevelContent, getLanguageMeta } from '../../data/registry';
+import { isAnswerAcceptable } from '../../utils/answer';
 import { useAuth } from '../../context/AuthContext';
 import { shuffle } from '../../utils/array';
 import { Colors, Spacing, FontSizes, FontWeights, BorderRadius } from '../../config/theme';
@@ -115,7 +116,7 @@ export function VocabBlitzScreen({ navigation }: Props) {
     if (!currentWord || phase !== 'playing' || isProcessing) return;
     setIsProcessing(true);
     const responseTime = Date.now() - wordStartTime.current;
-    const correct = typedAnswer.toLowerCase().trim() === currentWord.translation.toLowerCase().trim();
+    const correct = isAnswerAcceptable(typedAnswer, currentWord.translation);
 
     const item: AnsweredItem = {
       contentId: currentWord.id,
