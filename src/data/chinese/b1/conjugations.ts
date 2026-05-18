@@ -13,7 +13,7 @@
  *   subjectLabels→ descriptive labels for each key
  *
  * ConjugationPatterns teach three rules:
- *   1. Result complement V+结果
+ *   1. Result complement V+結果
  *   2. Direction complement V+方向
  *   3. Degree complement V+得+adj
  *
@@ -90,25 +90,25 @@ const HUILAI_LABELS: Record<string, string> = {
 const DE_HEN_LABELS: Record<string, string> = {
   affirmative: 'V 得很… (very)',
   negative: 'V 得不… (not)',
-  question: 'V 得…吗？(question)',
+  question: 'V 得…嗎？(question)',
 };
 
 const DE_BUCUO_LABELS: Record<string, string> = {
-  affirmative: 'V 得不错 (not bad)',
+  affirmative: 'V 得不錯 (not bad)',
   negative: 'V 得不太好 (not so good)',
-  question: 'V 得怎么样？(how?)',
+  question: 'V 得怎麼樣？(how?)',
 };
 
 const DE_BUHAO_LABELS: Record<string, string> = {
   affirmative: 'V 得不好 (not well)',
-  negative: 'V 得还好 (still okay)',
+  negative: 'V 得還好 (still okay)',
   question: 'V 得好不好？(well?)',
 };
 
 const JILE_LABELS: Record<string, string> = {
-  affirmative: 'Adj 极了 (extremely)',
-  negative: '一点儿也不… (not at all)',
-  question: '是不是…极了？(question)',
+  affirmative: 'Adj 極了 (extremely)',
+  negative: '一點兒也不… (not at all)',
+  question: '是不是…極了？(question)',
 };
 
 // ── Conjugation entries ───────────────────────────────────────
@@ -123,8 +123,8 @@ const rawConjugations: Omit<ConjugationEntry, 'subjectLabels'>[] = [
     isRegular: true, tense: 'present',
     conjugations: {
       affirmative: '我吃完了。(Wǒ chī wán le.) — I finished eating.',
-      negative: '我还没吃完。(Wǒ hái méi chī wán.) — I haven\'t finished eating yet.',
-      question: '你做完作业了吗？(Nǐ zuò wán zuòyè le ma?) — Have you finished your homework?',
+      negative: '我還沒吃完。(Wǒ hái méi chī wán.) — I haven\'t finished eating yet.',
+      question: '你做完作業了嗎？(Nǐ zuò wán zuòyè le ma?) — Have you finished your homework?',
     },
   },
   // 2. V + 到 (dào) — achieve / reach
@@ -133,9 +133,9 @@ const rawConjugations: Omit<ConjugationEntry, 'subjectLabels'>[] = [
     infinitive: 'V + 到 (dào)', translation: 'achieve / reach / succeed in doing',
     isRegular: true, tense: 'present',
     conjugations: {
-      affirmative: '我找到了钥匙。(Wǒ zhǎo dào le yàoshi.) — I found the key.',
-      negative: '我没看到他。(Wǒ méi kàn dào tā.) — I didn\'t see him.',
-      question: '你买到票了吗？(Nǐ mǎi dào piào le ma?) — Did you manage to buy the ticket?',
+      affirmative: '我找到了鑰匙。(Wǒ zhǎo dào le yàoshi.) — I found the key.',
+      negative: '我沒看到他。(Wǒ méi kàn dào tā.) — I didn\'t see him.',
+      question: '你買到票了嗎？(Nǐ mǎi dào piào le ma?) — Did you manage to buy the ticket?',
     },
   },
   // 3. V + 好 (hǎo) — done well / ready
@@ -144,20 +144,20 @@ const rawConjugations: Omit<ConjugationEntry, 'subjectLabels'>[] = [
     infinitive: 'V + 好 (hǎo)', translation: 'done well / finished properly / ready',
     isRegular: true, tense: 'present',
     conjugations: {
-      affirmative: '饭做好了。(Fàn zuò hǎo le.) — The food is ready.',
-      negative: '还没准备好。(Hái méi zhǔnbèi hǎo.) — Not ready yet.',
-      question: '你想好了吗？(Nǐ xiǎng hǎo le ma?) — Have you made up your mind?',
+      affirmative: '飯做好了。(Fàn zuò hǎo le.) — The food is ready.',
+      negative: '還沒準備好。(Hái méi zhǔnbèi hǎo.) — Not ready yet.',
+      question: '你想好了嗎？(Nǐ xiǎng hǎo le ma?) — Have you made up your mind?',
     },
   },
-  // 4. V + 错 (cuò) — done wrongly
+  // 4. V + 錯 (cuò) — done wrongly
   {
     id: 'zh_b1_c004', language: lang, level,
-    infinitive: 'V + 错 (cuò)', translation: 'done wrongly / mistakenly',
+    infinitive: 'V + 錯 (cuò)', translation: 'done wrongly / mistakenly',
     isRegular: true, tense: 'present',
     conjugations: {
-      affirmative: '我写错了。(Wǒ xiě cuò le.) — I wrote it wrong.',
-      negative: '我没说错。(Wǒ méi shuō cuò.) — I didn\'t say it wrong.',
-      question: '你是不是拿错了？(Nǐ shì bú shì ná cuò le?) — Did you take the wrong one?',
+      affirmative: '我寫錯了。(Wǒ xiě cuò le.) — I wrote it wrong.',
+      negative: '我沒說錯。(Wǒ méi shuō cuò.) — I didn\'t say it wrong.',
+      question: '你是不是拿錯了？(Nǐ shì bú shì ná cuò le?) — Did you take the wrong one?',
     },
   },
   // 5. V + 懂 (dǒng) — understand through doing
@@ -166,23 +166,23 @@ const rawConjugations: Omit<ConjugationEntry, 'subjectLabels'>[] = [
     infinitive: 'V + 懂 (dǒng)', translation: 'understand through (listening/reading/etc.)',
     isRegular: true, tense: 'present',
     conjugations: {
-      affirmative: '我听懂了。(Wǒ tīng dǒng le.) — I understood (by listening).',
-      negative: '我没听懂。(Wǒ méi tīng dǒng.) — I didn\'t understand.',
-      question: '你看懂了吗？(Nǐ kàn dǒng le ma?) — Did you understand (by reading)?',
+      affirmative: '我聽懂了。(Wǒ tīng dǒng le.) — I understood (by listening).',
+      negative: '我沒聽懂。(Wǒ méi tīng dǒng.) — I didn\'t understand.',
+      question: '你看懂了嗎？(Nǐ kàn dǒng le ma?) — Did you understand (by reading)?',
     },
   },
 
   // ── Direction complements ─────────────────────────────────────
 
-  // 6. V + 上来 (shàng lái) — come up
+  // 6. V + 上來 (shàng lái) — come up
   {
     id: 'zh_b1_c006', language: lang, level,
-    infinitive: 'V + 上来 (shàng lái)', translation: 'come up / move upward toward speaker',
+    infinitive: 'V + 上來 (shàng lái)', translation: 'come up / move upward toward speaker',
     isRegular: true, tense: 'present',
     conjugations: {
-      affirmative: '他跑上来了。(Tā pǎo shàng lái le.) — He ran up (toward the speaker).',
-      negative: '他没爬上来。(Tā méi pá shàng lái.) — He didn\'t climb up.',
-      question: '你能走上来吗？(Nǐ néng zǒu shàng lái ma?) — Can you walk up here?',
+      affirmative: '他跑上來了。(Tā pǎo shàng lái le.) — He ran up (toward the speaker).',
+      negative: '他沒爬上來。(Tā méi pá shàng lái.) — He didn\'t climb up.',
+      question: '你能走上來嗎？(Nǐ néng zǒu shàng lái ma?) — Can you walk up here?',
     },
   },
   // 7. V + 下去 (xià qù) — go down / continue
@@ -191,20 +191,20 @@ const rawConjugations: Omit<ConjugationEntry, 'subjectLabels'>[] = [
     infinitive: 'V + 下去 (xià qù)', translation: 'go down / continue doing',
     isRegular: true, tense: 'present',
     conjugations: {
-      affirmative: '请继续说下去。(Qǐng jìxù shuō xià qù.) — Please continue speaking.',
-      negative: '我坚持不下去了。(Wǒ jiānchí bú xià qù le.) — I can\'t keep going.',
-      question: '你还能坚持下去吗？(Nǐ hái néng jiānchí xià qù ma?) — Can you keep going?',
+      affirmative: '請繼續說下去。(Qǐng jìxù shuō xià qù.) — Please continue speaking.',
+      negative: '我堅持不下去了。(Wǒ jiānchí bú xià qù le.) — I can\'t keep going.',
+      question: '你還能堅持下去嗎？(Nǐ hái néng jiānchí xià qù ma?) — Can you keep going?',
     },
   },
-  // 8. V + 进来 (jìn lái) — come in
+  // 8. V + 進來 (jìn lái) — come in
   {
     id: 'zh_b1_c008', language: lang, level,
-    infinitive: 'V + 进来 (jìn lái)', translation: 'come in / enter toward speaker',
+    infinitive: 'V + 進來 (jìn lái)', translation: 'come in / enter toward speaker',
     isRegular: true, tense: 'present',
     conjugations: {
-      affirmative: '他走进来了。(Tā zǒu jìn lái le.) — He walked in.',
-      negative: '风没吹进来。(Fēng méi chuī jìn lái.) — The wind didn\'t blow in.',
-      question: '我可以走进来吗？(Wǒ kěyǐ zǒu jìn lái ma?) — May I come in?',
+      affirmative: '他走進來了。(Tā zǒu jìn lái le.) — He walked in.',
+      negative: '風沒吹進來。(Fēng méi chuī jìn lái.) — The wind didn\'t blow in.',
+      question: '我可以走進來嗎？(Wǒ kěyǐ zǒu jìn lái ma?) — May I come in?',
     },
   },
   // 9. V + 出去 (chū qù) — go out
@@ -214,19 +214,19 @@ const rawConjugations: Omit<ConjugationEntry, 'subjectLabels'>[] = [
     isRegular: true, tense: 'present',
     conjugations: {
       affirmative: '他跑出去了。(Tā pǎo chū qù le.) — He ran out.',
-      negative: '猫没跑出去。(Māo méi pǎo chū qù.) — The cat didn\'t run out.',
-      question: '你想出去走走吗？(Nǐ xiǎng chū qù zǒu zou ma?) — Do you want to go out for a walk?',
+      negative: '貓沒跑出去。(Māo méi pǎo chū qù.) — The cat didn\'t run out.',
+      question: '你想出去走走嗎？(Nǐ xiǎng chū qù zǒu zou ma?) — Do you want to go out for a walk?',
     },
   },
-  // 10. V + 回来 (huí lái) — come back
+  // 10. V + 回來 (huí lái) — come back
   {
     id: 'zh_b1_c010', language: lang, level,
-    infinitive: 'V + 回来 (huí lái)', translation: 'come back / return toward speaker',
+    infinitive: 'V + 回來 (huí lái)', translation: 'come back / return toward speaker',
     isRegular: true, tense: 'present',
     conjugations: {
-      affirmative: '他走回来了。(Tā zǒu huí lái le.) — He walked back.',
-      negative: '她还没回来。(Tā hái méi huí lái.) — She hasn\'t come back yet.',
-      question: '你什么时候回来？(Nǐ shénme shíhou huí lái?) — When are you coming back?',
+      affirmative: '他走回來了。(Tā zǒu huí lái le.) — He walked back.',
+      negative: '她還沒回來。(Tā hái méi huí lái.) — She hasn\'t come back yet.',
+      question: '你什麼時候回來？(Nǐ shénme shíhou huí lái?) — When are you coming back?',
     },
   },
 
@@ -238,20 +238,20 @@ const rawConjugations: Omit<ConjugationEntry, 'subjectLabels'>[] = [
     infinitive: 'V + 得很 (de hěn)', translation: 'do very (well/fast/etc.)',
     isRegular: true, tense: 'present',
     conjugations: {
-      affirmative: '她唱得很好听。(Tā chàng de hěn hǎo tīng.) — She sings very nicely.',
-      negative: '他说得不太清楚。(Tā shuō de bú tài qīngchu.) — He doesn\'t speak very clearly.',
-      question: '你跑得快吗？(Nǐ pǎo de kuài ma?) — Do you run fast?',
+      affirmative: '她唱得很好聽。(Tā chàng de hěn hǎo tīng.) — She sings very nicely.',
+      negative: '他說得不太清楚。(Tā shuō de bú tài qīngchu.) — He doesn\'t speak very clearly.',
+      question: '你跑得快嗎？(Nǐ pǎo de kuài ma?) — Do you run fast?',
     },
   },
-  // 12. V + 得不错 (de búcuò) — not bad
+  // 12. V + 得不錯 (de búcuò) — not bad
   {
     id: 'zh_b1_c012', language: lang, level,
-    infinitive: 'V + 得不错 (de búcuò)', translation: 'do pretty well / not bad',
+    infinitive: 'V + 得不錯 (de búcuò)', translation: 'do pretty well / not bad',
     isRegular: true, tense: 'present',
     conjugations: {
-      affirmative: '你中文说得不错。(Nǐ Zhōngwén shuō de búcuò.) — Your Chinese is pretty good.',
-      negative: '他这次考得不太好。(Tā zhè cì kǎo de bú tài hǎo.) — He didn\'t do so well on this exam.',
-      question: '他做得怎么样？(Tā zuò de zěnme yàng?) — How did he do?',
+      affirmative: '你中文說得不錯。(Nǐ Zhōngwén shuō de búcuò.) — Your Chinese is pretty good.',
+      negative: '他這次考得不太好。(Tā zhè cì kǎo de bú tài hǎo.) — He didn\'t do so well on this exam.',
+      question: '他做得怎麼樣？(Tā zuò de zěnme yàng?) — How did he do?',
     },
   },
   // 13. V + 得不好 (de bù hǎo) — not well
@@ -261,19 +261,19 @@ const rawConjugations: Omit<ConjugationEntry, 'subjectLabels'>[] = [
     isRegular: true, tense: 'present',
     conjugations: {
       affirmative: '他睡得不好。(Tā shuì de bù hǎo.) — He didn\'t sleep well.',
-      negative: '其实她做得还好。(Qíshí tā zuò de hái hǎo.) — Actually she did okay.',
+      negative: '其實她做得還好。(Qíshí tā zuò de hái hǎo.) — Actually she did okay.',
       question: '你昨天睡得好不好？(Nǐ zuótiān shuì de hǎo bù hǎo?) — Did you sleep well yesterday?',
     },
   },
-  // 14. Adj + 极了 (jí le) — extremely
+  // 14. Adj + 極了 (jí le) — extremely
   {
     id: 'zh_b1_c014', language: lang, level,
-    infinitive: 'Adj + 极了 (jí le)', translation: 'extremely (degree complement)',
+    infinitive: 'Adj + 極了 (jí le)', translation: 'extremely (degree complement)',
     isRegular: true, tense: 'present',
     conjugations: {
-      affirmative: '今天热极了。(Jīntiān rè jí le.) — It\'s extremely hot today.',
-      negative: '一点儿也不热。(Yì diǎnr yě bú rè.) — Not hot at all.',
-      question: '是不是累极了？(Shì bú shì lèi jí le?) — Are you extremely tired?',
+      affirmative: '今天熱極了。(Jīntiān rè jí le.) — It\'s extremely hot today.',
+      negative: '一點兒也不熱。(Yì diǎnr yě bú rè.) — Not hot at all.',
+      question: '是不是累極了？(Shì bú shì lèi jí le?) — Are you extremely tired?',
     },
   },
 ];
@@ -306,8 +306,8 @@ export const CHINESE_B1_CONJUGATIONS: ConjugationEntry[] = rawConjugations.map(
 export const CHINESE_B1_CONJUGATION_PATTERNS: ConjugationPattern[] = [
   {
     id: 'zh_b1_cp_result', language: lang, level,
-    name: 'Result Complement V+结果',
-    verbEnding: 'V+完/到/好/错/懂',
+    name: 'Result Complement V+結果',
+    verbEnding: 'V+完/到/好/錯/懂',
     tense: 'present',
     description:
       'A result complement is attached directly after the verb to indicate the OUTCOME ' +
@@ -315,16 +315,16 @@ export const CHINESE_B1_CONJUGATION_PATTERNS: ConjugationPattern[] = [
       '• 完 (wán) = finish — 吃完 (finished eating)\n' +
       '• 到 (dào) = reach/achieve — 找到 (found/managed to find)\n' +
       '• 好 (hǎo) = done well/ready — 做好 (prepared/ready)\n' +
-      '• 错 (cuò) = wrongly — 写错 (wrote wrong)\n' +
-      '• 懂 (dǒng) = understand — 听懂 (understood by listening)',
+      '• 錯 (cuò) = wrongly — 寫錯 (wrote wrong)\n' +
+      '• 懂 (dǒng) = understand — 聽懂 (understood by listening)',
     rule:
       'Verb + Result Complement (+ 了). ' +
-      'Negative: 没 + Verb + Result. Potential form: Verb + 得/不 + Result.',
+      'Negative: 沒 + Verb + Result. Potential form: Verb + 得/不 + Result.',
     endings: {
       wan: '完 (wán) — finish',
       dao: '到 (dào) — achieve / reach',
       hao: '好 (hǎo) — done well / ready',
-      cuo: '错 (cuò) — wrongly',
+      cuo: '錯 (cuò) — wrongly',
       dong: '懂 (dǒng) — understand through',
     },
     subjectLabels: {
@@ -334,38 +334,38 @@ export const CHINESE_B1_CONJUGATION_PATTERNS: ConjugationPattern[] = [
       cuo: 'done wrongly',
       dong: 'understand through perception',
     },
-    exampleVerbs: ['V+完', 'V+到', 'V+好', 'V+错', 'V+懂'],
+    exampleVerbs: ['V+完', 'V+到', 'V+好', 'V+錯', 'V+懂'],
     tips: [
       'The potential form inserts 得 (can) or 不 (cannot) between verb and complement: ' +
-        '听得懂 (can understand), 听不懂 (cannot understand).',
-      'Negative completed actions use 没: 没吃完 (haven\'t finished eating), 没找到 (didn\'t find).',
+        '聽得懂 (can understand), 聽不懂 (cannot understand).',
+      'Negative completed actions use 沒: 沒吃完 (haven\'t finished eating), 沒找到 (didn\'t find).',
       'Result complements are very productive — you can combine many verbs with these complements.',
     ],
   },
   {
     id: 'zh_b1_cp_direction', language: lang, level,
     name: 'Direction Complement V+方向',
-    verbEnding: 'V+上来/下去/进来/出去/回来',
+    verbEnding: 'V+上來/下去/進來/出去/回來',
     tense: 'present',
     description:
       'Direction complements indicate the DIRECTION of movement relative to the speaker.\n\n' +
-      'Simple direction words: 上 (up), 下 (down), 进 (in), 出 (out), 回 (back), 过 (across).\n' +
-      'Combined with 来 (toward speaker) or 去 (away from speaker):\n' +
-      '• 上来 = come up, 上去 = go up\n' +
-      '• 进来 = come in, 出去 = go out\n' +
-      '• 回来 = come back, 回去 = go back\n\n' +
+      'Simple direction words: 上 (up), 下 (down), 進 (in), 出 (out), 回 (back), 過 (across).\n' +
+      'Combined with 來 (toward speaker) or 去 (away from speaker):\n' +
+      '• 上來 = come up, 上去 = go up\n' +
+      '• 進來 = come in, 出去 = go out\n' +
+      '• 回來 = come back, 回去 = go back\n\n' +
       'They can also have ABSTRACT meanings:\n' +
-      '• 说下去 = continue talking\n' +
-      '• 想出来 = figure out / think of',
+      '• 說下去 = continue talking\n' +
+      '• 想出來 = figure out / think of',
     rule:
-      'Verb + Direction Complement. With an object: Verb + Direction1 + Object + 来/去. ' +
-      'Example: 走进教室来 (walk into the classroom toward speaker).',
+      'Verb + Direction Complement. With an object: Verb + Direction1 + Object + 來/去. ' +
+      'Example: 走進教室來 (walk into the classroom toward speaker).',
     endings: {
-      shanglai: '上来 (shàng lái) — come up',
+      shanglai: '上來 (shàng lái) — come up',
       xiaqu: '下去 (xià qù) — go down / continue',
-      jinlai: '进来 (jìn lái) — come in',
+      jinlai: '進來 (jìn lái) — come in',
       chuqu: '出去 (chū qù) — go out',
-      huilai: '回来 (huí lái) — come back',
+      huilai: '回來 (huí lái) — come back',
     },
     subjectLabels: {
       shanglai: 'upward toward speaker',
@@ -374,11 +374,11 @@ export const CHINESE_B1_CONJUGATION_PATTERNS: ConjugationPattern[] = [
       chuqu: 'outward away from speaker',
       huilai: 'back toward speaker',
     },
-    exampleVerbs: ['V+上来', 'V+下去', 'V+进来', 'V+出去', 'V+回来'],
+    exampleVerbs: ['V+上來', 'V+下去', 'V+進來', 'V+出去', 'V+回來'],
     tips: [
-      '来 = motion toward the speaker; 去 = motion away from the speaker.',
-      'When an object is present, it goes between the two parts: 走进教室来 (walk into the classroom).',
-      'Abstract / figurative uses are common at B1+: 坚持下去 (keep going), 想出来 (figure out).',
+      '來 = motion toward the speaker; 去 = motion away from the speaker.',
+      'When an object is present, it goes between the two parts: 走進教室來 (walk into the classroom).',
+      'Abstract / figurative uses are common at B1+: 堅持下去 (keep going), 想出來 (figure out).',
     ],
   },
   {
@@ -389,20 +389,20 @@ export const CHINESE_B1_CONJUGATION_PATTERNS: ConjugationPattern[] = [
     description:
       'A degree complement describes HOW an action is performed or to what degree. ' +
       'It uses the structural particle 得 (de) between the verb and the descriptive phrase.\n\n' +
-      '• 她唱得很好听。(She sings very nicely.)\n' +
+      '• 她唱得很好聽。(She sings very nicely.)\n' +
       '• 他跑得很快。(He runs very fast.)\n' +
       '• 我睡得不好。(I didn\'t sleep well.)\n\n' +
       'The complement after 得 can be simple (好, 快) or complex (非常好, 不太清楚).\n' +
-      '极了 (jí le) is a special intensifier meaning "extremely".',
+      '極了 (jí le) is a special intensifier meaning "extremely".',
     rule:
       'Verb + 得 + Adjective/Description. ' +
       'Negative: Verb + 得 + 不 + Adj. ' +
-      'Question: Verb + 得 + Adj + 吗？ or Verb + 得 + Adj + 不 + Adj？',
+      'Question: Verb + 得 + Adj + 嗎？ or Verb + 得 + Adj + 不 + Adj？',
     endings: {
       hen: '得很 (de hěn) — very',
-      bucuo: '得不错 (de búcuò) — not bad',
+      bucuo: '得不錯 (de búcuò) — not bad',
       buhao: '得不好 (de bù hǎo) — not well',
-      jile: '极了 (jí le) — extremely',
+      jile: '極了 (jí le) — extremely',
     },
     subjectLabels: {
       hen: 'very (positive degree)',
@@ -410,12 +410,12 @@ export const CHINESE_B1_CONJUGATION_PATTERNS: ConjugationPattern[] = [
       buhao: 'not well (negative degree)',
       jile: 'extremely (superlative)',
     },
-    exampleVerbs: ['V+得很', 'V+得不错', 'V+得不好', 'Adj+极了'],
+    exampleVerbs: ['V+得很', 'V+得不錯', 'V+得不好', 'Adj+極了'],
     tips: [
-      'When the verb has an object, repeat the verb: 她说中文说得很好 or 她中文说得很好 ' +
-        '(NOT *她说中文得很好).',
+      'When the verb has an object, repeat the verb: 她說中文說得很好 or 她中文說得很好 ' +
+        '(NOT *她說中文得很好).',
       '得 here is pronounced "de" (neutral tone), not "dé" (to get) or "děi" (must).',
-      '极了 attaches directly to an adjective without 得: 热极了, 好极了, 高兴极了.',
+      '極了 attaches directly to an adjective without 得: 熱極了, 好極了, 高興極了.',
     ],
   },
 ];

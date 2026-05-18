@@ -13,9 +13,9 @@
  *   subjectLabels→ descriptive labels for each key
  *
  * ConjugationPatterns teach three rules:
- *   1. Specialised measure words (双, 把, 辆)
+ *   1. Specialised measure words (雙, 把, 輛)
  *   2. Completion aspect with 了
- *   3. Experience aspect with 过
+ *   3. Experience aspect with 過
  *
  * IDs: zh_a2_c001–zh_a2_c012 (entries), zh_a2_cp_* (patterns).
  */
@@ -104,15 +104,15 @@ const NOT_YET_LABELS: Record<string, string> = {
 const rawConjugations: Omit<ConjugationEntry, 'subjectLabels'>[] = [
   // ── More measure words ────────────────────────────────────────
 
-  // 1. 双 (shuāng) — pairs
+  // 1. 雙 (shuāng) — pairs
   {
     id: 'zh_a2_c001', language: lang, level,
-    infinitive: '双', translation: 'pairs (shoes, chopsticks, gloves)',
+    infinitive: '雙', translation: 'pairs (shoes, chopsticks, gloves)',
     isRegular: true, tense: 'present',
     conjugations: {
-      shoes: '一双鞋 (yī shuāng xié) — one pair of shoes',
-      chopsticks: '一双筷子 (yī shuāng kuàizi) — one pair of chopsticks',
-      gloves: '一双手套 (yī shuāng shǒutào) — one pair of gloves',
+      shoes: '一雙鞋 (yī shuāng xié) — one pair of shoes',
+      chopsticks: '一雙筷子 (yī shuāng kuàizi) — one pair of chopsticks',
+      gloves: '一雙手套 (yī shuāng shǒutào) — one pair of gloves',
     },
   },
   // 2. 把 (bǎ) — things with handles
@@ -121,20 +121,20 @@ const rawConjugations: Omit<ConjugationEntry, 'subjectLabels'>[] = [
     infinitive: '把', translation: 'things with handles (umbrella, chair, knife)',
     isRegular: true, tense: 'present',
     conjugations: {
-      umbrella: '一把伞 (yī bǎ sǎn) — one umbrella',
+      umbrella: '一把傘 (yī bǎ sǎn) — one umbrella',
       chair: '一把椅子 (yī bǎ yǐzi) — one chair',
       knife: '一把刀 (yī bǎ dāo) — one knife',
     },
   },
-  // 3. 辆 (liàng) — vehicles
+  // 3. 輛 (liàng) — vehicles
   {
     id: 'zh_a2_c003', language: lang, level,
-    infinitive: '辆', translation: 'vehicles (car, bicycle, bus)',
+    infinitive: '輛', translation: 'vehicles (car, bicycle, bus)',
     isRegular: true, tense: 'present',
     conjugations: {
-      car: '一辆车 (yī liàng chē) — one car',
-      bicycle: '一辆自行车 (yī liàng zìxíngchē) — one bicycle',
-      bus: '两辆公共汽车 (liǎng liàng gōnggòng qìchē) — two buses',
+      car: '一輛車 (yī liàng chē) — one car',
+      bicycle: '一輛自行車 (yī liàng zìxíngchē) — one bicycle',
+      bus: '兩輛公共汽車 (liǎng liàng gōnggòng qìchē) — two buses',
     },
   },
   // 4. 套 (tào) — sets
@@ -145,7 +145,7 @@ const rawConjugations: Omit<ConjugationEntry, 'subjectLabels'>[] = [
     conjugations: {
       clothes: '一套衣服 (yī tào yīfu) — one set of clothes',
       furniture: '一套家具 (yī tào jiājù) — one set of furniture',
-      books: '一套书 (yī tào shū) — one set of books',
+      books: '一套書 (yī tào shū) — one set of books',
     },
   },
   // 5. 份 (fèn) — portions / copies
@@ -154,20 +154,20 @@ const rawConjugations: Omit<ConjugationEntry, 'subjectLabels'>[] = [
     infinitive: '份', translation: 'portions, copies (newspaper, food, document)',
     isRegular: true, tense: 'present',
     conjugations: {
-      newspaper: '一份报纸 (yī fèn bàozhǐ) — one newspaper',
-      food: '一份炒饭 (yī fèn chǎofàn) — one portion of fried rice',
+      newspaper: '一份報紙 (yī fèn bàozhǐ) — one newspaper',
+      food: '一份炒飯 (yī fèn chǎofàn) — one portion of fried rice',
       document: '三份文件 (sān fèn wénjiàn) — three copies of a document',
     },
   },
-  // 6. 层 (céng) — floors / layers
+  // 6. 層 (céng) — floors / layers
   {
     id: 'zh_a2_c006', language: lang, level,
-    infinitive: '层', translation: 'floors, layers (building floors, cake layers)',
+    infinitive: '層', translation: 'floors, layers (building floors, cake layers)',
     isRegular: true, tense: 'present',
     conjugations: {
-      floor: '三层楼 (sān céng lóu) — third floor',
-      cake: '两层蛋糕 (liǎng céng dàngāo) — two-layer cake',
-      meaning: '这句话有好几层意思 (zhè jù huà yǒu hǎo jǐ céng yìsi) — this sentence has multiple layers of meaning',
+      floor: '三層樓 (sān céng lóu) — third floor',
+      cake: '兩層蛋糕 (liǎng céng dàngāo) — two-layer cake',
+      meaning: '這句話有好幾層意思 (zhè jù huà yǒu hǎo jǐ céng yìsi) — this sentence has multiple layers of meaning',
     },
   },
 
@@ -179,31 +179,31 @@ const rawConjugations: Omit<ConjugationEntry, 'subjectLabels'>[] = [
     infinitive: '了', translation: 'completed action marker (verb + 了)',
     isRegular: true, tense: 'present',
     conjugations: {
-      eat: '我吃了饭 (wǒ chī le fàn) — I ate / I\'ve eaten',
+      eat: '我吃了飯 (wǒ chī le fàn) — I ate / I\'ve eaten',
       go: '他去了北京 (tā qù le Běijīng) — He went to Beijing',
-      buy: '她买了一本书 (tā mǎi le yī běn shū) — She bought a book',
+      buy: '她買了一本書 (tā mǎi le yī běn shū) — She bought a book',
     },
   },
-  // 8. 过 (guò) — experienced
+  // 8. 過 (guò) — experienced
   {
     id: 'zh_a2_c008', language: lang, level,
-    infinitive: '过', translation: 'experience marker — "have ever done"',
+    infinitive: '過', translation: 'experience marker — "have ever done"',
     isRegular: true, tense: 'present',
     conjugations: {
-      visit: '我去过中国 (wǒ qù guò Zhōngguó) — I have been to China',
-      eat: '你吃过北京烤鸭吗？(nǐ chī guò Běijīng kǎoyā ma?) — Have you ever eaten Peking duck?',
-      see: '我看过这个电影 (wǒ kàn guò zhè ge diànyǐng) — I have seen this movie',
+      visit: '我去過中國 (wǒ qù guò Zhōngguó) — I have been to China',
+      eat: '你吃過北京烤鴨嗎？(nǐ chī guò Běijīng kǎoyā ma?) — Have you ever eaten Peking duck?',
+      see: '我看過這個電影 (wǒ kàn guò zhè ge diànyǐng) — I have seen this movie',
     },
   },
-  // 9. 着 (zhe) — ongoing state
+  // 9. 著 (zhe) — ongoing state
   {
     id: 'zh_a2_c009', language: lang, level,
-    infinitive: '着', translation: 'ongoing state marker (verb + 着)',
+    infinitive: '著', translation: 'ongoing state marker (verb + 著)',
     isRegular: true, tense: 'present',
     conjugations: {
-      wear: '她穿着红色的衣服 (tā chuān zhe hóngsè de yīfu) — She is wearing red clothes',
-      sit: '他坐着看书 (tā zuò zhe kàn shū) — He sits reading a book',
-      open: '门开着呢 (mén kāi zhe ne) — The door is open',
+      wear: '她穿著紅色的衣服 (tā chuān zhe hóngsè de yīfu) — She is wearing red clothes',
+      sit: '他坐著看書 (tā zuò zhe kàn shū) — He sits reading a book',
+      open: '門開著呢 (mén kāi zhe ne) — The door is open',
     },
   },
   // 10. 在 (zài) — in progress
@@ -212,9 +212,9 @@ const rawConjugations: Omit<ConjugationEntry, 'subjectLabels'>[] = [
     infinitive: '在', translation: 'progressive marker — "currently doing"',
     isRegular: true, tense: 'present',
     conjugations: {
-      eat: '我在吃饭 (wǒ zài chī fàn) — I am eating',
-      study: '他在学习中文 (tā zài xuéxí Zhōngwén) — He is studying Chinese',
-      watch: '她在看电视 (tā zài kàn diànshì) — She is watching TV',
+      eat: '我在吃飯 (wǒ zài chī fàn) — I am eating',
+      study: '他在學習中文 (tā zài xuéxí Zhōngwén) — He is studying Chinese',
+      watch: '她在看電視 (tā zài kàn diànshì) — She is watching TV',
     },
   },
   // 11. 要...了 (yào...le) — about to happen
@@ -224,19 +224,19 @@ const rawConjugations: Omit<ConjugationEntry, 'subjectLabels'>[] = [
     isRegular: true, tense: 'present',
     conjugations: {
       rain: '要下雨了 (yào xià yǔ le) — It\'s about to rain',
-      depart: '火车要开了 (huǒchē yào kāi le) — The train is about to depart',
-      start: '电影要开始了 (diànyǐng yào kāishǐ le) — The movie is about to start',
+      depart: '火車要開了 (huǒchē yào kāi le) — The train is about to depart',
+      start: '電影要開始了 (diànyǐng yào kāishǐ le) — The movie is about to start',
     },
   },
-  // 12. 还没...呢 (hái méi...ne) — haven't yet
+  // 12. 還沒...呢 (hái méi...ne) — haven't yet
   {
     id: 'zh_a2_c012', language: lang, level,
-    infinitive: '还没...呢', translation: 'haven\'t yet — action not completed',
+    infinitive: '還沒...呢', translation: 'haven\'t yet — action not completed',
     isRegular: true, tense: 'present',
     conjugations: {
-      eat: '我还没吃饭呢 (wǒ hái méi chī fàn ne) — I haven\'t eaten yet',
-      finish: '作业还没做完呢 (zuòyè hái méi zuò wán ne) — The homework isn\'t finished yet',
-      come: '他还没来呢 (tā hái méi lái ne) — He hasn\'t come yet',
+      eat: '我還沒吃飯呢 (wǒ hái méi chī fàn ne) — I haven\'t eaten yet',
+      finish: '作業還沒做完呢 (zuòyè hái méi zuò wán ne) — The homework isn\'t finished yet',
+      come: '他還沒來呢 (tā hái méi lái ne) — He hasn\'t come yet',
     },
   },
 ];
@@ -267,33 +267,33 @@ export const CHINESE_A2_CONJUGATIONS: ConjugationEntry[] = rawConjugations.map(
 export const CHINESE_A2_CONJUGATION_PATTERNS: ConjugationPattern[] = [
   {
     id: 'zh_a2_cp_mw', language: lang, level,
-    name: 'Specialised Measure Words (双, 把, 辆)',
-    verbEnding: '双/把/辆',
+    name: 'Specialised Measure Words (雙, 把, 輛)',
+    verbEnding: '雙/把/輛',
     tense: 'present',
     description:
       'Beyond the basic measure words learned at A1, Chinese has many specialised ' +
       'classifiers tied to the nature or shape of the object. ' +
-      '双 (shuāng) is for things that come in pairs, ' +
+      '雙 (shuāng) is for things that come in pairs, ' +
       '把 (bǎ) is for objects with handles or that you grasp, ' +
-      'and 辆 (liàng) is specifically for wheeled vehicles.',
+      'and 輛 (liàng) is specifically for wheeled vehicles.',
     rule:
       'Use the pattern: Number + Measure Word + Noun. ' +
-      'Example: 一双鞋 (one pair of shoes), 一把伞 (one umbrella), 一辆车 (one car).',
+      'Example: 一雙鞋 (one pair of shoes), 一把傘 (one umbrella), 一輛車 (one car).',
     endings: {
-      pair: '双 (shuāng) — pairs',
+      pair: '雙 (shuāng) — pairs',
       handle: '把 (bǎ) — things with handles',
-      vehicle: '辆 (liàng) — vehicles',
+      vehicle: '輛 (liàng) — vehicles',
     },
     subjectLabels: {
       pair: 'pairs (shoes, chopsticks)',
       handle: 'things with handles',
       vehicle: 'wheeled vehicles',
     },
-    exampleVerbs: ['双', '把', '辆'],
+    exampleVerbs: ['雙', '把', '輛'],
     tips: [
-      '双 is specifically for things that come in pairs: 鞋 (shoes), 筷子 (chopsticks), 手套 (gloves).',
+      '雙 is specifically for things that come in pairs: 鞋 (shoes), 筷子 (chopsticks), 手套 (gloves).',
       '把 covers umbrellas, chairs, knives, keys — anything you grip or that has a handle.',
-      '辆 is exclusively for vehicles: 车, 自行车, 公共汽车, 出租车.',
+      '輛 is exclusively for vehicles: 車, 自行車, 公共汽車, 出租車.',
     ],
   },
   {
@@ -307,56 +307,56 @@ export const CHINESE_A2_CONJUGATION_PATTERNS: ConjugationPattern[] = [
       'past, present, or future. Sentence-final 了 can also indicate a change of state.',
     rule:
       'Verb + 了 (+ object) for completed actions. ' +
-      'Example: 我吃了饭 (I ate). For change of state: 下雨了 (It\'s started to rain). ' +
-      'Negative: 没 + verb (drop 了). 我没吃饭 (I didn\'t eat).',
+      'Example: 我吃了飯 (I ate). For change of state: 下雨了 (It\'s started to rain). ' +
+      'Negative: 沒 + verb (drop 了). 我沒吃飯 (I didn\'t eat).',
     endings: {
       completed: 'Verb + 了 = completed',
       change: 'Sentence + 了 = change of state',
-      negative: '没 + Verb (了 removed)',
+      negative: '沒 + Verb (了 removed)',
     },
     subjectLabels: {
       completed: 'completed action',
       change: 'change of state',
-      negative: 'negation (没)',
+      negative: 'negation (沒)',
     },
-    exampleVerbs: ['吃了', '去了', '买了'],
+    exampleVerbs: ['吃了', '去了', '買了'],
     tips: [
       '了 is NOT "past tense". It marks COMPLETION. You can use it for future completed actions too: ' +
-        '你吃了饭再走 (eat first, then leave).',
-      'To negate, use 没 and DROP 了: 我没吃饭 (I didn\'t eat), NOT *我没吃了饭.',
+        '你吃了飯再走 (eat first, then leave).',
+      'To negate, use 沒 and DROP 了: 我沒吃飯 (I didn\'t eat), NOT *我沒吃了飯.',
       'Sentence-final 了 signals change: 天冷了 (It\'s gotten cold) — the weather changed.',
     ],
   },
   {
     id: 'zh_a2_cp_guo', language: lang, level,
-    name: 'Experience Aspect with 过 (guò)',
-    verbEnding: '过',
+    name: 'Experience Aspect with 過 (guò)',
+    verbEnding: '過',
     tense: 'present',
     description:
-      '过 (guò) placed after a verb indicates that someone has HAD THE EXPERIENCE ' +
+      '過 (guò) placed after a verb indicates that someone has HAD THE EXPERIENCE ' +
       'of doing something at some unspecified time in the past. It is similar to ' +
       '"have ever…" in English.',
     rule:
-      'Verb + 过 (+ object) for life experiences. ' +
-      'Example: 我去过中国 (I have been to China). ' +
-      'Negative: 没 + verb + 过. 我没去过日本 (I have never been to Japan). ' +
-      'Question: …verb + 过…吗？你吃过北京烤鸭吗？(Have you ever had Peking duck?)',
+      'Verb + 過 (+ object) for life experiences. ' +
+      'Example: 我去過中國 (I have been to China). ' +
+      'Negative: 沒 + verb + 過. 我沒去過日本 (I have never been to Japan). ' +
+      'Question: …verb + 過…嗎？你吃過北京烤鴨嗎？(Have you ever had Peking duck?)',
     endings: {
-      positive: 'Verb + 过 = have experienced',
-      negative: '没 + Verb + 过 = have never',
-      question: 'Verb + 过 + 吗？ = have you ever?',
+      positive: 'Verb + 過 = have experienced',
+      negative: '沒 + Verb + 過 = have never',
+      question: 'Verb + 過 + 嗎？ = have you ever?',
     },
     subjectLabels: {
       positive: 'positive experience',
       negative: 'negative — never done',
       question: 'asking about experience',
     },
-    exampleVerbs: ['去过', '吃过', '看过'],
+    exampleVerbs: ['去過', '吃過', '看過'],
     tips: [
-      'Unlike 了 (completion), 过 emphasises the EXPERIENCE itself, not when it happened.',
-      'Compare: 我吃了烤鸭 (I ate Peking duck [specific event]) vs. ' +
-        '我吃过烤鸭 (I have had Peking duck [at some point in my life]).',
-      'Negative keeps 过: 没去过 (have never been), 没吃过 (have never eaten).',
+      'Unlike 了 (completion), 過 emphasises the EXPERIENCE itself, not when it happened.',
+      'Compare: 我吃了烤鴨 (I ate Peking duck [specific event]) vs. ' +
+        '我吃過烤鴨 (I have had Peking duck [at some point in my life]).',
+      'Negative keeps 過: 沒去過 (have never been), 沒吃過 (have never eaten).',
     ],
   },
 ];

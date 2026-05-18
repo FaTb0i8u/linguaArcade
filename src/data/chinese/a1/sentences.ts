@@ -15,7 +15,7 @@ export const CHINESE_A1_SENTENCES: SentencePattern[] = [
   // ── Basic statements (SVO) ────────────────────────────────────
   {
     id: 'zh_a1_s001', language: lang, level, category: 'basic_statements',
-    words: ['我', '吃', '米饭'],
+    words: ['我', '吃', '米飯'],
     translation: 'I eat rice.',
     hint: 'Subject + verb + object',
     distractors: ['喝', '看'],
@@ -29,106 +29,106 @@ export const CHINESE_A1_SENTENCES: SentencePattern[] = [
   },
   {
     id: 'zh_a1_s003', language: lang, level, category: 'basic_statements',
-    words: ['她', '看', '书'],
+    words: ['她', '看', '書'],
     translation: 'She reads a book.',
     hint: 'Subject + verb + object',
-    distractors: ['吃', '我们'],
+    distractors: ['吃', '我們'],
   },
   {
     id: 'zh_a1_s004', language: lang, level, category: 'basic_statements',
-    words: ['我们', '去', '学校'],
+    words: ['我們', '去', '學校'],
     translation: 'We go to school.',
     hint: 'Subject + verb + place',
-    distractors: ['他们', '来'],
+    distractors: ['他們', '來'],
   },
 
-  // ── Questions (using 吗) ──────────────────────────────────────
+  // ── Questions (using 嗎) ──────────────────────────────────────
   {
     id: 'zh_a1_s005', language: lang, level, category: 'questions',
-    words: ['你', '好', '吗'],
+    words: ['你', '好', '嗎'],
     translation: 'How are you?',
-    hint: 'Add 吗 to make a yes/no question',
+    hint: 'Add 嗎 to make a yes/no question',
     distractors: ['他', '不'],
   },
   {
     id: 'zh_a1_s006', language: lang, level, category: 'questions',
-    words: ['你', '是', '学生', '吗'],
+    words: ['你', '是', '學生', '嗎'],
     translation: 'Are you a student?',
-    hint: 'Statement + 吗 = question',
-    distractors: ['老师', '不'],
+    hint: 'Statement + 嗎 = question',
+    distractors: ['老師', '不'],
   },
   {
     id: 'zh_a1_s007', language: lang, level, category: 'questions',
-    words: ['他', '去', '中国', '吗'],
+    words: ['他', '去', '中國', '嗎'],
     translation: 'Is he going to China?',
-    hint: 'Statement + 吗 = question',
+    hint: 'Statement + 嗎 = question',
     distractors: ['她', '不', '了'],
   },
 
-  // ── Negation (不 / 没) ────────────────────────────────────────
+  // ── Negation (不 / 沒) ────────────────────────────────────────
   {
     id: 'zh_a1_s008', language: lang, level, category: 'negation',
     words: ['我', '不', '喝', '咖啡'],
     translation: 'I don\'t drink coffee.',
     hint: '不 before the verb to negate',
-    distractors: ['没', '茶'],
+    distractors: ['沒', '茶'],
   },
   {
     id: 'zh_a1_s009', language: lang, level, category: 'negation',
-    words: ['他', '没', '去', '学校'],
+    words: ['他', '沒', '去', '學校'],
     translation: 'He didn\'t go to school.',
-    hint: '没 negates completed actions',
-    distractors: ['不', '来'],
+    hint: '沒 negates completed actions',
+    distractors: ['不', '來'],
   },
   {
     id: 'zh_a1_s010', language: lang, level, category: 'negation',
-    words: ['她', '不', '是', '老师'],
+    words: ['她', '不', '是', '老師'],
     translation: 'She is not a teacher.',
     hint: '不 before 是 to negate identity',
-    distractors: ['没', '学生'],
+    distractors: ['沒', '學生'],
   },
 
   // ── Measure words (number + MW + noun) ────────────────────────
   {
     id: 'zh_a1_s011', language: lang, level, category: 'measure_words',
-    words: ['一', '个', '苹果'],
+    words: ['一', '個', '蘋果'],
     translation: 'One apple.',
-    hint: 'Number + measure word 个 + noun',
+    hint: 'Number + measure word 個 + noun',
     distractors: ['杯', '本'],
   },
   {
     id: 'zh_a1_s012', language: lang, level, category: 'measure_words',
-    words: ['两', '杯', '茶'],
+    words: ['兩', '杯', '茶'],
     translation: 'Two cups of tea.',
     hint: 'Number + measure word 杯 + noun',
-    distractors: ['个', '本'],
+    distractors: ['個', '本'],
   },
   {
     id: 'zh_a1_s013', language: lang, level, category: 'measure_words',
-    words: ['三', '本', '书'],
+    words: ['三', '本', '書'],
     translation: 'Three books.',
     hint: 'Number + measure word 本 + noun',
-    distractors: ['个', '杯'],
+    distractors: ['個', '杯'],
   },
 
   // ── Possessives (using 的) ────────────────────────────────────
   {
     id: 'zh_a1_s014', language: lang, level, category: 'possessives',
-    words: ['这', '是', '我', '的', '书'],
+    words: ['這', '是', '我', '的', '書'],
     translation: 'This is my book.',
     hint: 'Pronoun + 的 = possessive',
     distractors: ['他', '那'],
   },
   {
     id: 'zh_a1_s015', language: lang, level, category: 'possessives',
-    words: ['那', '是', '他', '的', '手机'],
+    words: ['那', '是', '他', '的', '手機'],
     translation: 'That is his phone.',
     hint: 'Pronoun + 的 = possessive',
-    distractors: ['我', '这'],
+    distractors: ['我', '這'],
   },
   {
     id: 'zh_a1_s016', language: lang, level, category: 'possessives',
-    words: ['妈妈', '的', '朋友'],
+    words: ['媽媽', '的', '朋友'],
     translation: 'Mom\'s friend.',
     hint: 'Noun + 的 = possessive',
     distractors: ['是', '爸爸'],
@@ -147,6 +147,6 @@ export const CHINESE_A1_SENTENCES: SentencePattern[] = [
     words: ['明天', '我', '去', '商店'],
     translation: 'Tomorrow I will go to the store.',
     hint: 'Time word can also come before the subject',
-    distractors: ['今天', '学校'],
+    distractors: ['今天', '學校'],
   },
 ];

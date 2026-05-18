@@ -6,10 +6,10 @@
  *
  * Chinese is unique in several ways:
  *   - No verb conjugations — verbs never change form
- *   - The "conjugation" slots are repurposed for measure words (量词),
+ *   - The "conjugation" slots are repurposed for measure words (量詞),
  *     aspect markers, complement structures, and literary patterns
  *   - Tones are critical — pronunciation always includes pinyin tone marks
- *   - Characters are simplified (简体字)
+ *   - Characters are simplified (簡體字)
  */
 
 import type { LanguageMeta } from '../../types';
@@ -63,7 +63,7 @@ import {
 export const CHINESE_META: LanguageMeta = {
   code: 'zh',
   name: 'Chinese',
-  nativeName: '中文',
+  nativeName: '繁體中文',
   flag: '🇨🇳',
   hasConjugations: false,
   writingDirection: 'ltr',
@@ -73,11 +73,11 @@ export const CHINESE_META: LanguageMeta = {
 
 const CHINESE_TIPS: string[] = [
   'Chinese has FOUR tones + a neutral tone. The same syllable "ma" can mean mother (mā), hemp (má), horse (mǎ), or scold (mà)!',
-  'Chinese verbs NEVER change form — no conjugations, no tenses. Instead, particles like 了, 过, and 着 indicate aspect.',
-  'Every noun needs a MEASURE WORD (量词) between the number and the noun: 一个人, 两本书, 三杯水.',
-  'Chinese word order is generally Subject-Verb-Object, similar to English: 我吃饭 (I eat rice).',
-  'The particle 的 is Chinese\'s Swiss Army knife: possessive (我的), attributive (红色的), and nominaliser (吃的).',
-  '成语 (chéngyǔ) are four-character idioms from classical stories. Using them well is a hallmark of fluency.',
+  'Chinese verbs NEVER change form — no conjugations, no tenses. Instead, particles like 了, 過, and 着 indicate aspect.',
+  'Every noun needs a MEASURE WORD (量詞) between the number and the noun: 一個人, 兩本書, 三杯水.',
+  'Chinese word order is generally Subject-Verb-Object, similar to English: 我吃飯 (I eat rice).',
+  'The particle 的 is Chinese\'s Swiss Army knife: possessive (我的), attributive (紅色的), and nominaliser (吃的).',
+  '成語 (chéngyǔ) are four-character idioms from classical stories. Using them well is a hallmark of fluency.',
   'Chinese has no alphabet — each character represents a syllable and a meaning. But ~80% of characters are phono-semantic compounds with a meaning radical and a sound component.',
   'Pinyin is your best friend for learning pronunciation, but native Chinese writing never uses it. Think of pinyin as training wheels.',
 ];
