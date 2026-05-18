@@ -19,6 +19,8 @@ import { Button } from '../../components/common/Button';
 import { WordTile } from '../../components/games/WordTile';
 import { ScoreDisplay } from '../../components/games/ScoreDisplay';
 import { ProgressBar } from '../../components/common/ProgressBar';
+import { SpeakButton } from '../../components/common/SpeakButton';
+import { speak } from '../../utils/speech';
 import { XP } from '../../config/constants';
 import { useProgress } from '../../context/ProgressContext';
 
@@ -91,6 +93,8 @@ export function SentenceBuilderScreen({ navigation }: Props) {
     const responseTime = Date.now() - sentenceStartTime.current;
 
     setCheckResult(isCorrect);
+    // Speak the correct sentence so the user hears proper pronunciation
+    speak({ text: correctAnswer, language: lang });
     setAnswered((prev) => [...prev, {
       contentId: currentSentence.id,
       contentType: 'sentence',
@@ -194,6 +198,14 @@ export function SentenceBuilderScreen({ navigation }: Props) {
           <Text style={styles.promptTranslation}>"{currentSentence.translation}"</Text>
           {currentSentence.hint && (
             <Text style={styles.hintText}>💡 {currentSentence.hint}</Text>
+          )}
+          {checkResult !== null && (
+            <SpeakButton
+              text={currentSentence.words.join(' ')}
+              language={lang}
+              size="md"
+              style={{ marginTop: Spacing.sm }}
+            />
           )}
         </View>
 

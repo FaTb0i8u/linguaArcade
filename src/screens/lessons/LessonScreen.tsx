@@ -21,6 +21,8 @@ import { Colors, Spacing, FontSizes, FontWeights, BorderRadius, Shadows } from '
 import { Card } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { ProgressBar } from '../../components/common/ProgressBar';
+import { SpeakButton } from '../../components/common/SpeakButton';
+import { speak } from '../../utils/speech';
 import { LessonEngine } from '../../engines/lesson';
 import { SRSEngine } from '../../services/srs';
 import { useProgress } from '../../context/ProgressContext';
@@ -135,6 +137,13 @@ export function LessonScreen() {
   };
 
   const currentStep: LessonStep | null = lesson ? lesson.steps[stepIndex] ?? null : null;
+
+  // Auto-speak the target word/prompt when introducing new vocabulary
+  useEffect(() => {
+    if (phase === 'running' && currentStep?.type === 'introduce') {
+      speak({ text: currentStep.prompt, language: lang });
+    }
+  }, [stepIndex, phase]);
 
   const advanceStep = useCallback(() => {
     setShowResult(null);
@@ -364,7 +373,10 @@ export function LessonScreen() {
           <View style={styles.introBlock}>
             <Text style={styles.introEmoji}>📖</Text>
             <Text style={styles.introLabel}>New Word</Text>
-            <Text style={styles.introPrompt}>{currentStep.prompt}</Text>
+            <View style={styles.promptRow}>
+              <Text style={styles.introPrompt}>{currentStep.prompt}</Text>
+              <SpeakButton text={currentStep.prompt} language={lang} size="md" />
+            </View>
             {currentStep.hint && <Text style={styles.introHint}>{currentStep.hint}</Text>}
             <Button title="Got it!" onPress={advanceStep} style={{ marginTop: Spacing.lg }} />
           </View>
@@ -373,7 +385,10 @@ export function LessonScreen() {
         {/* Multiple choice */}
         {currentStep.type === 'multiple_choice' && (
           <View style={styles.quizBlock}>
-            <Text style={styles.quizPrompt}>{currentStep.prompt}</Text>
+            <View style={styles.promptRow}>
+              <Text style={styles.quizPrompt}>{currentStep.prompt}</Text>
+              <SpeakButton text={currentStep.prompt} language={lang} size="sm" />
+            </View>
             <View style={styles.optionsGrid}>
               {currentStep.options?.map((opt, idx) => {
                 const isSelected = selectedOption === opt;
@@ -410,7 +425,10 @@ export function LessonScreen() {
         {/* Type answer */}
         {currentStep.type === 'type_answer' && (
           <View style={styles.quizBlock}>
-            <Text style={styles.quizPrompt}>{currentStep.prompt}</Text>
+            <View style={styles.promptRow}>
+              <Text style={styles.quizPrompt}>{currentStep.prompt}</Text>
+              <SpeakButton text={currentStep.prompt} language={lang} size="sm" />
+            </View>
             {currentStep.hint && <Text style={styles.hintText}>💡 {currentStep.hint}</Text>}
             <TextInput
               style={[
@@ -523,12 +541,19 @@ const styles = StyleSheet.create({
   introHint: { fontSize: FontSizes.md, color: Colors.textSecondary, marginTop: Spacing.md, fontStyle: 'italic' },
   // Quiz
   quizBlock: { paddingTop: Spacing.lg },
+  promptRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: Spacing.sm,
+    marginBottom: Spacing.lg,
+  },
   quizPrompt: {
     fontSize: FontSizes.xl,
     fontWeight: FontWeights.semibold,
     color: Colors.textPrimary,
     textAlign: 'center',
-    marginBottom: Spacing.lg,
+    flexShrink: 1,
   },
   hintText: { fontSize: FontSizes.sm, color: Colors.textSecondary, textAlign: 'center', marginBottom: Spacing.md },
   optionsGrid: { gap: Spacing.sm },

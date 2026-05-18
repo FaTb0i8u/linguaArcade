@@ -17,6 +17,7 @@ import { useAuth } from '../../context/AuthContext';
 import { shuffle } from '../../utils/array';
 import { Colors, Spacing, FontSizes, FontWeights, BorderRadius, Shadows } from '../../config/theme';
 import { Button } from '../../components/common/Button';
+import { speak } from '../../utils/speech';
 import { HealthBar } from '../../components/games/HealthBar';
 import { FighterCharacter } from '../../components/games/FighterCharacter';
 import { Timer } from '../../components/games/Timer';
@@ -160,11 +161,13 @@ export function ConjugationFighterScreen({ navigation }: Props) {
       setEnemyAction('hurt');
       setEnemyHP((hp) => Math.max(0, hp - DAMAGE));
       setFeedback(`✅ Correct! ${currentRound.verb.infinitive} → ${currentRound.correctAnswer}`);
+      speak({ text: currentRound.correctAnswer, language: lang });
     } else {
       setEnemyAction('attack');
       setPlayerAction('hurt');
       setPlayerHP((hp) => Math.max(0, hp - DAMAGE));
-      setFeedback(`❌ Answer: ${currentRound.correctAnswer}`);
+      setFeedback(`\u274c Answer: ${currentRound.correctAnswer}`);
+      speak({ text: currentRound.correctAnswer, language: lang });
     }
 
     setTimeout(() => {

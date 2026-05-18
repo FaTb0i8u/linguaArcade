@@ -24,6 +24,8 @@ import { shuffle } from '../../utils/array';
 import { Colors, Spacing, FontSizes, FontWeights, BorderRadius } from '../../config/theme';
 import { Button } from '../../components/common/Button';
 import { ProgressBar } from '../../components/common/ProgressBar';
+import { SpeakButton } from '../../components/common/SpeakButton';
+import { speak } from '../../utils/speech';
 import { ScoreDisplay } from '../../components/games/ScoreDisplay';
 import { Timer } from '../../components/games/Timer';
 import { XP, GAME_TIMERS } from '../../config/constants';
@@ -81,6 +83,13 @@ export function VocabBlitzScreen({ navigation }: Props) {
   }, []);
 
   const currentWord = words[currentIdx] ?? null;
+
+  // Auto-speak each new word when it appears
+  useEffect(() => {
+    if (phase === 'playing' && currentWord) {
+      speak({ text: currentWord.word, language: lang });
+    }
+  }, [currentIdx, phase]);
 
   const endGame = useCallback(() => {
     const elapsed = (Date.now() - startTime.current) / 1000;
@@ -262,6 +271,7 @@ export function VocabBlitzScreen({ navigation }: Props) {
         {currentWord.pronunciation && (
           <Text style={styles.pronunciation}>[{currentWord.pronunciation}]</Text>
         )}
+        <SpeakButton text={currentWord.word} language={lang} size="md" style={{ marginTop: Spacing.sm }} />
       </View>
 
       {/* Input */}
