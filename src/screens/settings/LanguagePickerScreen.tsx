@@ -42,6 +42,7 @@ export function LanguagePickerScreen({ onBack }: Props) {
     );
     if (confirmed) {
       await updateLanguage(lang);
+      onBack?.();
     }
   };
 

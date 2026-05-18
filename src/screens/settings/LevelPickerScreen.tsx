@@ -86,6 +86,7 @@ export function LevelPickerScreen({ onBack }: Props) {
     );
     if (confirmed) {
       await updateLevel(level);
+      onBack?.();
     }
   };
 
