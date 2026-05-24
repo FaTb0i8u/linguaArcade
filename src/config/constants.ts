@@ -23,7 +23,45 @@ export const XP = {
   GAME_PARTICIPATION: 25,
   PERFECT_ROUND: 75,
 } as const;
+// ── Coin rewards ────────────────────────────────────────────────────────────
+export const COINS = {
+  LESSON_COMPLETE: 20,
+  GAME_WIN: 30,
+  GAME_PARTICIPATION: 10,
+  PERFECT_ROUND: 50,
+  STREAK_BONUS_PER_DAY: 5,   // bonus coins per streak day (capped at 7)
+} as const;
 
+// ── Pet system ──────────────────────────────────────────────────────────────
+export const PET = {
+  MAX_HUNGER: 100,
+  HUNGER_DECAY_PER_HOUR: 2,   // loses 2 hunger points per hour
+  HUNGER_STATES: [
+    { threshold: 80, label: 'Full', emoji: '😊' },
+    { threshold: 60, label: 'Content', emoji: '🙂' },
+    { threshold: 40, label: 'Hungry', emoji: '😟' },
+    { threshold: 20, label: 'Very Hungry', emoji: '😢' },
+    { threshold: 0,  label: 'Starving', emoji: '😭' },
+  ],
+} as const;
+
+/** Available pet types (emoji placeholders, will be replaced with art later) */
+export const PET_TYPES = [
+  { id: 'cat', name: 'Luna', emoji: '🐱', description: 'A curious little cat' },
+  { id: 'dog', name: 'Buddy', emoji: '🐶', description: 'A loyal companion' },
+  { id: 'rabbit', name: 'Mochi', emoji: '🐰', description: 'A fluffy friend' },
+  { id: 'fox', name: 'Kitsune', emoji: '🦊', description: 'A clever fox' },
+  { id: 'panda', name: 'Bao', emoji: '🐼', description: 'A gentle giant' },
+] as const;
+
+/** Food items that can be purchased to feed the pet */
+export const FOOD_ITEMS = [
+  { id: 'kibble', name: 'Kibble', emoji: '🍪', hungerRestore: 10, cost: 10, description: 'A basic snack' },
+  { id: 'fish', name: 'Grilled Fish', emoji: '🍽️', hungerRestore: 25, cost: 20, description: 'A tasty meal' },
+  { id: 'cake', name: 'Cake', emoji: '🍰', hungerRestore: 40, cost: 35, description: 'A delicious treat' },
+  { id: 'feast', name: 'Royal Feast', emoji: '🍖', hungerRestore: 70, cost: 60, description: 'A magnificent banquet' },
+  { id: 'golden_apple', name: 'Golden Apple', emoji: '🍎', hungerRestore: 100, cost: 100, description: 'Fully restores hunger' },
+] as const;
 // ── Level thresholds (words learned to advance) ─────────────────
 // Tuned to match realistic A1 content sizes (~50-100 words per level)
 export const LEVEL_THRESHOLDS: Record<CEFRLevel, number> = {
@@ -86,4 +124,5 @@ export const STORAGE_KEYS = {
   SRS_CARDS: '@lingua_srs_cards',
   AUTH_TOKEN: '@lingua_auth_token',
   SETTINGS: '@lingua_settings',
+  PET_DATA: '@lingua_pet_data',
 } as const;

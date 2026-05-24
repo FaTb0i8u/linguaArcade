@@ -20,6 +20,72 @@ const LABELS: Record<string, string> = {
 };
 
 const rawConjugations: Omit<ConjugationEntry, 'subjectLabels'>[] = [
+  // ── Present tense (mixed in to challenge tense recognition) ──
+  {
+    id: 'es_a2_c020', language: lang, level, infinitive: 'viajar',
+    translation: 'to travel', isRegular: true, tense: 'present',
+    conjugations: {
+      yo: 'viajo', tú: 'viajas', él: 'viaja',
+      nosotros: 'viajamos', vosotros: 'viajáis', ellos: 'viajan',
+    },
+  },
+  {
+    id: 'es_a2_c021', language: lang, level, infinitive: 'correr',
+    translation: 'to run', isRegular: true, tense: 'present',
+    conjugations: {
+      yo: 'corro', tú: 'corres', él: 'corre',
+      nosotros: 'corremos', vosotros: 'corréis', ellos: 'corren',
+    },
+  },
+  {
+    id: 'es_a2_c022', language: lang, level, infinitive: 'abrir',
+    translation: 'to open', isRegular: true, tense: 'present',
+    conjugations: {
+      yo: 'abro', tú: 'abres', él: 'abre',
+      nosotros: 'abrimos', vosotros: 'abrís', ellos: 'abren',
+    },
+  },
+  {
+    id: 'es_a2_c023', language: lang, level, infinitive: 'conocer',
+    translation: 'to know (someone/place)', isRegular: false, tense: 'present',
+    conjugations: {
+      yo: 'conozco', tú: 'conoces', él: 'conoce',
+      nosotros: 'conocemos', vosotros: 'conocéis', ellos: 'conocen',
+    },
+  },
+  {
+    id: 'es_a2_c024', language: lang, level, infinitive: 'pedir',
+    translation: 'to ask for / to order', isRegular: false, tense: 'present',
+    conjugations: {
+      yo: 'pido', tú: 'pides', él: 'pide',
+      nosotros: 'pedimos', vosotros: 'pedís', ellos: 'piden',
+    },
+  },
+  {
+    id: 'es_a2_c025', language: lang, level, infinitive: 'dormir',
+    translation: 'to sleep', isRegular: false, tense: 'present',
+    conjugations: {
+      yo: 'duermo', tú: 'duermes', él: 'duerme',
+      nosotros: 'dormimos', vosotros: 'dormís', ellos: 'duermen',
+    },
+  },
+  {
+    id: 'es_a2_c026', language: lang, level, infinitive: 'pensar',
+    translation: 'to think', isRegular: false, tense: 'present',
+    conjugations: {
+      yo: 'pienso', tú: 'piensas', él: 'piensa',
+      nosotros: 'pensamos', vosotros: 'pensáis', ellos: 'piensan',
+    },
+  },
+  {
+    id: 'es_a2_c027', language: lang, level, infinitive: 'jugar',
+    translation: 'to play (a game)', isRegular: false, tense: 'present',
+    conjugations: {
+      yo: 'juego', tú: 'juegas', él: 'juega',
+      nosotros: 'jugamos', vosotros: 'jugáis', ellos: 'juegan',
+    },
+  },
+
   // ── Preterite -AR verbs ─────────────────────────────────────
   {
     id: 'es_a2_c001', language: lang, level, infinitive: 'hablar',

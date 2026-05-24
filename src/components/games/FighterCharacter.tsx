@@ -1,42 +1,71 @@
 /**
- * Fighter character sprite (simplified with emoji + animations).
+ * Fighter character sprite — displays actual character art per action.
  *
- * In v1 we use large emoji as stand-in characters.
- * A future version can swap these for Lottie or sprite-sheet animations.
+ * Each character has 5 pose images in assets/fighters/{character}-{action}.png.
+ * The component handles horizontal flipping for the right-side opponent.
  */
 
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Image, Text, StyleSheet, ImageSourcePropType } from 'react-native';
 import { Colors, FontSizes, FontWeights, Spacing, BorderRadius } from '../../config/theme';
 
-type FighterAction = 'idle' | 'attack' | 'defend' | 'hurt' | 'victory' | 'defeat';
+export type FighterAction = 'idle' | 'attack' | 'defend' | 'hurt' | 'victory' | 'defeat';
+export type FighterCharacterId = 'maiden' | 'assassin' | 'fighter';
 
 interface FighterCharacterProps {
   name: string;
+  character: FighterCharacterId;
   action: FighterAction;
   side: 'left' | 'right';
   isPlayer: boolean;
 }
 
-const actionEmojis: Record<FighterAction, string> = {
-  idle: '🧍',
-  attack: '👊',
-  defend: '🛡️',
-  hurt: '😵',
-  victory: '🎉',
-  defeat: '😢',
+// React Native requires static requires — map each character+action to its asset.
+const sprites: Record<FighterCharacterId, Record<string, ImageSourcePropType>> = {
+  maiden: {
+    idle: require('../../../assets/fighters/maiden-idle.png'),
+    attack: require('../../../assets/fighters/maiden-attack.png'),
+    hurt: require('../../../assets/fighters/maiden-hurt.png'),
+    victory: require('../../../assets/fighters/maiden-victory.png'),
+    defeat: require('../../../assets/fighters/maiden-defeat.png'),
+  },
+  assassin: {
+    idle: require('../../../assets/fighters/assassin-idle.png'),
+    attack: require('../../../assets/fighters/assassin-attack.png'),
+    hurt: require('../../../assets/fighters/assassin-hurt.png'),
+    victory: require('../../../assets/fighters/assassin-victory.png'),
+    defeat: require('../../../assets/fighters/assassin-defeat.png'),
+  },
+  fighter: {
+    idle: require('../../../assets/fighters/fighter-idle.png'),
+    attack: require('../../../assets/fighters/fighter-attack.png'),
+    hurt: require('../../../assets/fighters/fighter-hurt.png'),
+    victory: require('../../../assets/fighters/fighter-victory.png'),
+    defeat: require('../../../assets/fighters/fighter-defeat.png'),
+  },
 };
 
-export function FighterCharacter({ name, action, side, isPlayer }: FighterCharacterProps) {
-  const emoji = actionEmojis[action];
+export function FighterCharacter({ name, character, action, side, isPlayer }: FighterCharacterProps) {
+  // "defend" doesn't have its own sprite — fall back to idle
+  const spriteAction = action === 'defend' ? 'idle' : action;
+  const source = sprites[character][spriteAction];
   const isFlipped = side === 'right';
 
   return (
     <View style={[styles.container, isFlipped && styles.flipped]}>
-      <Text style={styles.emoji}>{emoji}</Text>
-      <Text style={[styles.name, isPlayer && styles.playerName, isFlipped && styles.unflip]}>{name}</Text>
+      <Image source={source} style={styles.sprite} resizeMode="contain" />
+      <Text style={[styles.name, isPlayer && styles.playerName, isFlipped && styles.unflip]}>
+        {name}
+      </Text>
       {action !== 'idle' && (
-        <View style={[styles.actionBadge, action === 'attack' && styles.attackBadge, action === 'hurt' && styles.hurtBadge, isFlipped && styles.unflip]}>
+        <View
+          style={[
+            styles.actionBadge,
+            action === 'attack' && styles.attackBadge,
+            action === 'hurt' && styles.hurtBadge,
+            isFlipped && styles.unflip,
+          ]}
+        >
           <Text style={styles.actionText}>{action.toUpperCase()}</Text>
         </View>
       )}
@@ -47,7 +76,7 @@ export function FighterCharacter({ name, action, side, isPlayer }: FighterCharac
 const styles = StyleSheet.create({
   container: { alignItems: 'center', padding: Spacing.sm },
   flipped: { transform: [{ scaleX: -1 }] },
-  emoji: { fontSize: 64 },
+  sprite: { width: 150, height: 200 },
   name: {
     fontSize: FontSizes.sm,
     fontWeight: FontWeights.bold,

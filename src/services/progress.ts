@@ -34,6 +34,7 @@ const blankProgress = (
   language: lang,
   level,
   xp: 0,
+  coins: 0,
   streak: 0,
   lastActiveDate: new Date().toISOString(),
   lessonsCompleted: 0,

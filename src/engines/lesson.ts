@@ -82,6 +82,7 @@ export const LessonEngine = {
         contentType: 'vocab',
         prompt: `${word.word} — ${word.translation}`,
         correctAnswer: word.translation,
+        speakText: word.word,
         hint: word.exampleSentence,
       });
     }
@@ -98,6 +99,7 @@ export const LessonEngine = {
         contentType: 'vocab',
         prompt: `What is "${word.translation}" in ${meta.name}?`,
         correctAnswer: word.word,
+        speakText: word.word,
         options: shuffle([word.word, ...distractors]),
       });
     }
@@ -110,6 +112,7 @@ export const LessonEngine = {
         contentType: 'vocab',
         prompt: `Translate: "${word.word}"`,
         correctAnswer: word.translation,
+        speakText: word.word,
         hint: word.exampleSentence,
       });
     }
@@ -194,6 +197,7 @@ export const LessonEngine = {
         contentType: 'conjugation',
         prompt: `Conjugate "${verb.infinitive}" for ${label}:`,
         correctAnswer: correct,
+        speakText: correct,
         options: shuffle([correct, ...distractors]),
       });
     }
@@ -208,6 +212,7 @@ export const LessonEngine = {
         contentType: 'conjugation',
         prompt: `Type the "${verb.infinitive}" conjugation for ${label}:`,
         correctAnswer: verb.conjugations[subj],
+        speakText: verb.conjugations[subj],
         hint: `Remember the ${pattern.verbEnding} endings: ${label} → ${pattern.endings[subj]}`,
       });
     }
@@ -267,6 +272,7 @@ export const LessonEngine = {
         contentType: 'conjugation',
         prompt: `Conjugate "${entry.infinitive}" for ${labels[subj] ?? subj}:`,
         correctAnswer: correct,
+        speakText: correct,
         options: shuffle([correct, ...distractors]),
       });
     }
@@ -279,6 +285,7 @@ export const LessonEngine = {
         contentType: 'conjugation',
         prompt: `Type the "${entry.infinitive}" form for ${labels[subj] ?? subj}:`,
         correctAnswer: entry.conjugations[subj],
+        speakText: entry.conjugations[subj],
         hint: `${entry.translation} — ${entry.tense} tense (irregular!)`,
       });
     }
@@ -382,6 +389,7 @@ export const LessonEngine = {
           contentType: 'vocab',
           prompt: `What is "${word.translation}" in ${meta.name}?`,
           correctAnswer: word.word,
+          speakText: word.word,
           options: shuffle([word.word, ...distractors]),
         });
 
@@ -392,6 +400,7 @@ export const LessonEngine = {
           contentType: 'vocab',
           prompt: `Translate: "${word.word}"`,
           correctAnswer: word.translation,
+          speakText: word.word,
           hint: word.exampleSentence,
         });
       } else if (card.contentType === 'conjugation') {
@@ -414,6 +423,7 @@ export const LessonEngine = {
           contentType: 'conjugation',
           prompt: `Conjugate "${entry.infinitive}" for ${label}:`,
           correctAnswer: correct,
+          speakText: correct,
           options: shuffle([correct, ...distractors]),
         });
       }
@@ -476,6 +486,7 @@ export const LessonEngine = {
         contentType: 'vocab',
         prompt: example.target,
         correctAnswer: example.english,
+        speakText: example.target,
         hint: `Translation: ${example.english}`,
       });
     }
@@ -488,6 +499,7 @@ export const LessonEngine = {
         contentType: 'vocab',
         prompt: `Translate: "${example.target}"`,
         correctAnswer: example.english,
+        speakText: example.target,
         hint: rule.title,
       });
     }
@@ -500,6 +512,7 @@ export const LessonEngine = {
         contentType: 'vocab',
         prompt: `How do you say "${example.english}" in ${meta.name}?`,
         correctAnswer: example.target,
+        speakText: example.target,
         hint: rule.title,
       });
     }

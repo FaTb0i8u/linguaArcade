@@ -1,7 +1,7 @@
 /**
  * LinguaArcade — App Entry Point
  *
- * Wraps the entire app in providers (Auth, Progress, SafeArea, Gestures)
+ * Wraps the entire app in providers (Auth, Progress, Pet, SafeArea, Gestures)
  * and renders the root navigator which switches between Auth and Main stacks.
  */
 
@@ -11,6 +11,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AuthProvider } from './src/context/AuthContext';
 import { ProgressProvider } from './src/context/ProgressContext';
+import { PetProvider } from './src/context/PetContext';
 import { ErrorBoundary } from './src/components/common/ErrorBoundary';
 import { AppNavigator } from './src/navigation/AppNavigator';
 
@@ -27,8 +28,10 @@ export default function App() {
         <ErrorBoundary>
           <AuthProvider>
             <ProgressProvider>
-              <AppNavigator />
-              <StatusBar style="auto" />
+              <PetProvider>
+                <AppNavigator />
+                <StatusBar style="auto" />
+              </PetProvider>
             </ProgressProvider>
           </AuthProvider>
         </ErrorBoundary>

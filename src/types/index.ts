@@ -167,6 +167,7 @@ export interface UserProgress {
   language: SupportedLanguage;
   level: CEFRLevel;
   xp: number;
+  coins: number;              // earned from lessons/games, spent on pet food
   streak: number;              // consecutive days
   lastActiveDate: string;
   lessonsCompleted: number;
@@ -234,6 +235,8 @@ export interface LessonStep {
   correctAnswer: string;
   options?: string[];          // for multiple choice
   hint?: string;
+  /** Target-language word/phrase for TTS pronunciation (avoids reading English prompts). */
+  speakText?: string;
   /** For teach_rule steps: the endings table to display. */
   endingsTable?: Record<string, string>;
   /** For teach_rule steps: subject labels for display. */
@@ -271,8 +274,9 @@ export type AuthStackParamList = {
 
 export type MainTabParamList = {
   Home: undefined;
-  Arcade: undefined;
   Lessons: undefined;
+  Arcade: undefined;
+  Pet: undefined;
   Profile: undefined;
 };
 
@@ -282,3 +286,25 @@ export type ArcadeStackParamList = {
   ConjugationFighter: undefined;
   SentenceBuilder: undefined;
 };
+
+// ──────────────────────────────────────────────
+// Pet System
+// ──────────────────────────────────────────────
+
+export type PetTypeId = 'cat' | 'dog' | 'rabbit' | 'fox' | 'panda';
+
+export type PetMood = 'ecstatic' | 'happy' | 'content' | 'hungry' | 'starving';
+
+export interface PetState {
+  id: string;
+  typeId: PetTypeId;
+  name: string;
+  hunger: number;             // 0–100, decays over time
+  lastFedAt: string;          // ISO timestamp
+  createdAt: string;          // ISO timestamp
+  totalFeedings: number;
+  adoptedDay: number;         // day count since adoption
+}
+
+export type FoodItemId = 'kibble' | 'fish' | 'cake' | 'feast' | 'golden_apple';
+

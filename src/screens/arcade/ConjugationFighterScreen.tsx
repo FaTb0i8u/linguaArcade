@@ -8,7 +8,7 @@
  */
 
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { ArcadeStackParamList, AnsweredItem, GameSessionResult, ConjugationEntry } from '../../types';
@@ -87,10 +87,38 @@ export function ConjugationFighterScreen({ navigation }: Props) {
   const [feedback, setFeedback] = useState<string | null>(null);
   const [timerKey, setTimerKey] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [showResults, setShowResults] = useState(false);
+  const [gameResult, setGameResult] = useState<{ won: boolean; correct: number; total: number; xp: number } | null>(null);
   const startTime = useRef(Date.now());
   const roundStartTime = useRef(Date.now());
 
   const currentRound = rounds[roundIdx] ?? null;
+
+  // ── Attack lunge animation ──
+  const playerX = useRef(new Animated.Value(0)).current;
+  const enemyX = useRef(new Animated.Value(0)).current;
+
+  const animateAttack = useCallback((attacker: 'player' | 'enemy') => {
+    const animValue = attacker === 'player' ? playerX : enemyX;
+    const lungeDistance = attacker === 'player' ? 80 : -80; // px toward opponent
+
+    Animated.sequence([
+      // Lunge forward
+      Animated.timing(animValue, {
+        toValue: lungeDistance,
+        duration: 150,
+        useNativeDriver: true,
+      }),
+      // Hold briefly at contact
+      Animated.delay(200),
+      // Return to starting position
+      Animated.timing(animValue, {
+        toValue: 0,
+        duration: 200,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, [playerX, enemyX]);
 
   const initGame = useCallback(() => {
     setRounds(buildRounds(content.conjugations, ROUNDS));
@@ -103,6 +131,8 @@ export function ConjugationFighterScreen({ navigation }: Props) {
     setAnswered([]);
     setFeedback(null);
     setIsProcessing(false);
+    setShowResults(false);
+    setGameResult(null);
     startTime.current = Date.now();
     roundStartTime.current = Date.now();
     setTimerKey((k) => k + 1);
@@ -112,6 +142,7 @@ export function ConjugationFighterScreen({ navigation }: Props) {
     const won = pHP > 0 && eHP <= 0;
     setPlayerAction(won ? 'victory' : 'defeat');
     setEnemyAction(won ? 'defeat' : 'victory');
+    setFeedback(null);
 
     const correct = answered.filter((a) => a.wasCorrect).length;
     const elapsed = (Date.now() - startTime.current) / 1000;
@@ -128,7 +159,13 @@ export function ConjugationFighterScreen({ navigation }: Props) {
       answeredItems: answered,
     };
     recordGame(result);
+    setGameResult({ won, correct, total: answered.length, xp });
     setPhase('results');
+
+    // Show the win/lose animation for 2 seconds, then reveal the results overlay
+    setTimeout(() => {
+      setShowResults(true);
+    }, 2000);
   }, [answered, score, recordGame]);
 
   // Check for game end
@@ -162,12 +199,14 @@ export function ConjugationFighterScreen({ navigation }: Props) {
       setEnemyHP((hp) => Math.max(0, hp - DAMAGE));
       setFeedback(`✅ Correct! ${currentRound.verb.infinitive} → ${currentRound.correctAnswer}`);
       speak({ text: currentRound.correctAnswer, language: lang });
+      animateAttack('player');
     } else {
       setEnemyAction('attack');
       setPlayerAction('hurt');
       setPlayerHP((hp) => Math.max(0, hp - DAMAGE));
-      setFeedback(`\u274c Answer: ${currentRound.correctAnswer}`);
+      setFeedback(`❌ Answer: ${currentRound.correctAnswer}`);
       speak({ text: currentRound.correctAnswer, language: lang });
+      animateAttack('enemy');
     }
 
     setTimeout(() => {
@@ -203,26 +242,16 @@ export function ConjugationFighterScreen({ navigation }: Props) {
     );
   }
 
-  // ── Results Phase ───────────────────────────────────────────
-  if (phase === 'results') {
-    const won = playerHP > 0 && enemyHP <= 0;
-    const correct = answered.filter((a) => a.wasCorrect).length;
-    const xp = correct * XP.CORRECT_ANSWER + (won ? XP.GAME_WIN : XP.GAME_PARTICIPATION);
-    return (
-      <View style={[styles.screen, styles.center, { paddingTop: insets.top }]}>
-        <Text style={styles.resultEmoji}>{won ? '🏆' : '😤'}</Text>
-        <Text style={styles.resultTitle}>{won ? 'You Win!' : 'You Lost!'}</Text>
-        <Text style={styles.resultScore}>Score: {score}</Text>
-        <Text style={styles.resultDetail}>{correct}/{answered.length} correct</Text>
-        <Text style={styles.resultXp}>+{xp} XP</Text>
-        <Button title="Rematch" onPress={() => { initGame(); setPhase('fighting'); }} style={{ marginTop: Spacing.lg }} />
-        <Button title="← Back to Arcade" onPress={() => navigation.goBack()} variant="ghost" style={{ marginTop: Spacing.sm }} />
-      </View>
-    );
-  }
+  // ── Results Phase — now rendered as overlay inside the arena ──
+  // (removed full-screen results — see overlay below)
 
-  // ── Fighting Phase ──────────────────────────────────────────
-  if (!currentRound) return null;
+  // ── Fighting / Results Phase ────────────────────────────────
+  if (!currentRound && phase !== 'results') return null;
+
+  // Format tense for display
+  const tenseLabel = currentRound?.verb.tense
+    ? currentRound.verb.tense.replace('_', ' ').replace(/\b\w/g, c => c.toUpperCase())
+    : '';
 
   return (
     <View style={[styles.screen, { paddingTop: insets.top + Spacing.xs }]}>
@@ -235,55 +264,78 @@ export function ConjugationFighterScreen({ navigation }: Props) {
 
       {/* Characters */}
       <View style={styles.arena}>
-        <FighterCharacter name="You" action={playerAction} side="left" isPlayer />
-        <FighterCharacter name="Enemy" action={enemyAction} side="right" isPlayer={false} />
+        <Animated.View style={{ transform: [{ translateX: playerX }] }}>
+          <FighterCharacter name="You" character="maiden" action={playerAction} side="left" isPlayer />
+        </Animated.View>
+        <Animated.View style={{ transform: [{ translateX: enemyX }] }}>
+          <FighterCharacter name="Enemy" character="assassin" action={enemyAction} side="right" isPlayer={false} />
+        </Animated.View>
       </View>
 
-      {/* Score & Timer */}
-      <View style={styles.hudRow}>
-        <ScoreDisplay score={score} />
-        <Text style={styles.roundText}>Round {roundIdx + 1}/{rounds.length}</Text>
-      </View>
+      {/* Score & Timer — only during active fighting */}
+      {phase === 'fighting' && (
+        <>
+          <View style={styles.hudRow}>
+            <ScoreDisplay score={score} />
+            <Text style={styles.roundText}>Round {roundIdx + 1}/{rounds.length}</Text>
+          </View>
 
-      <View style={styles.timerRow}>
-        <Timer
-          durationMs={GAME_TIMERS.FIGHTER_ANSWER_TIME}
-          onTimeUp={handleTimeUp}
-          resetKey={timerKey}
-          isPaused={isProcessing}
-        />
-      </View>
+          <View style={styles.timerRow}>
+            <Timer
+              durationMs={GAME_TIMERS.FIGHTER_ANSWER_TIME}
+              onTimeUp={handleTimeUp}
+              resetKey={timerKey}
+              isPaused={isProcessing || phase !== 'fighting'}
+            />
+          </View>
+        </>
+      )}
 
-      {/* Prompt */}
-      <View style={styles.promptArea}>
-        <Text style={styles.promptLabel}>Conjugate:</Text>
-        <Text style={styles.promptVerb}>
-          {currentRound.verb.infinitive} ({currentRound.verb.translation})
-        </Text>
-        <Text style={styles.promptSubject}>
-          for → <Text style={styles.subjectHighlight}>{currentRound.verb.subjectLabels[currentRound.subject] ?? currentRound.subject}</Text>
-        </Text>
-      </View>
+      {/* Prompt + Options — shown during fighting */}
+      {phase === 'fighting' && currentRound && (
+        <>
+          <View style={styles.promptArea}>
+            <Text style={styles.promptLabel}>Conjugate ({tenseLabel}):</Text>
+            <Text style={styles.promptVerb}>
+              {currentRound.verb.infinitive} ({currentRound.verb.translation})
+            </Text>
+            <Text style={styles.promptSubject}>
+              for → <Text style={styles.subjectHighlight}>{currentRound.verb.subjectLabels[currentRound.subject] ?? currentRound.subject}</Text>
+            </Text>
+          </View>
 
-      {/* Options */}
-      <View style={styles.optionsGrid}>
-        {currentRound.options.map((opt, idx) => (
-          <TouchableOpacity
-            key={idx}
-            style={styles.optionBtn}
-            onPress={() => processAnswer(opt)}
-            disabled={isProcessing}
-            activeOpacity={0.7}
-          >
-            <Text style={styles.optionText}>{opt}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
+          <View style={styles.optionsGrid}>
+            {currentRound.options.map((opt, idx) => (
+              <TouchableOpacity
+                key={idx}
+                style={styles.optionBtn}
+                onPress={() => processAnswer(opt)}
+                disabled={isProcessing}
+                activeOpacity={0.7}
+              >
+                <Text style={styles.optionText}>{opt}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
 
-      {/* Feedback */}
-      {feedback && (
-        <View style={styles.feedbackBar}>
-          <Text style={styles.feedbackText}>{feedback}</Text>
+          {feedback && (
+            <View style={styles.feedbackBar}>
+              <Text style={styles.feedbackText}>{feedback}</Text>
+            </View>
+          )}
+        </>
+      )}
+
+      {/* Results overlay — fades in after victory/defeat animation plays */}
+      {phase === 'results' && showResults && gameResult && (
+        <View style={styles.resultsOverlay}>
+          <Text style={styles.resultEmoji}>{gameResult.won ? '🏆' : '😤'}</Text>
+          <Text style={styles.resultTitle}>{gameResult.won ? 'You Win!' : 'You Lost!'}</Text>
+          <Text style={styles.resultScore}>Score: {score}</Text>
+          <Text style={styles.resultDetail}>{gameResult.correct}/{gameResult.total} correct</Text>
+          <Text style={styles.resultXp}>+{gameResult.xp} XP</Text>
+          <Button title="Rematch" onPress={() => { initGame(); setPhase('fighting'); }} style={{ marginTop: Spacing.lg }} />
+          <Button title="← Back to Arcade" onPress={() => navigation.goBack()} variant="ghost" style={{ marginTop: Spacing.sm }} />
         </View>
       )}
     </View>
@@ -347,8 +399,20 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.15)',
   },
   feedbackText: { fontSize: FontSizes.md, fontWeight: FontWeights.semibold, color: Colors.white, textAlign: 'center' },
-  // Results
-  resultEmoji: { fontSize: 64, marginBottom: Spacing.md },
+  // Results overlay
+  resultsOverlay: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(26, 26, 46, 0.95)',
+    borderTopLeftRadius: BorderRadius.xl,
+    borderTopRightRadius: BorderRadius.xl,
+    paddingVertical: Spacing.xl,
+    paddingHorizontal: Spacing.lg,
+    alignItems: 'center',
+  },
+  resultEmoji: { fontSize: 48, marginBottom: Spacing.sm },
   resultTitle: { fontSize: FontSizes.xxl, fontWeight: FontWeights.bold, color: Colors.white },
   resultScore: { fontSize: FontSizes.xl, fontWeight: FontWeights.bold, color: Colors.primary, marginTop: Spacing.sm },
   resultDetail: { fontSize: FontSizes.md, color: Colors.textLight, marginTop: Spacing.xs },

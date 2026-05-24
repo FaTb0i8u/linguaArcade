@@ -140,8 +140,8 @@ export function LessonScreen() {
 
   // Auto-speak the target word/prompt when introducing new vocabulary
   useEffect(() => {
-    if (phase === 'running' && currentStep?.type === 'introduce') {
-      speak({ text: currentStep.prompt, language: lang });
+    if (phase === 'running' && currentStep?.type === 'introduce' && currentStep.speakText) {
+      speak({ text: currentStep.speakText, language: lang });
     }
   }, [stepIndex, phase]);
 
@@ -375,7 +375,7 @@ export function LessonScreen() {
             <Text style={styles.introLabel}>New Word</Text>
             <View style={styles.promptRow}>
               <Text style={styles.introPrompt}>{currentStep.prompt}</Text>
-              <SpeakButton text={currentStep.prompt} language={lang} size="md" />
+              <SpeakButton text={currentStep.speakText ?? currentStep.prompt} language={lang} size="md" />
             </View>
             {currentStep.hint && <Text style={styles.introHint}>{currentStep.hint}</Text>}
             <Button title="Got it!" onPress={advanceStep} style={{ marginTop: Spacing.lg }} />
@@ -387,7 +387,7 @@ export function LessonScreen() {
           <View style={styles.quizBlock}>
             <View style={styles.promptRow}>
               <Text style={styles.quizPrompt}>{currentStep.prompt}</Text>
-              <SpeakButton text={currentStep.prompt} language={lang} size="sm" />
+              <SpeakButton text={currentStep.speakText ?? currentStep.correctAnswer} language={lang} size="sm" />
             </View>
             <View style={styles.optionsGrid}>
               {currentStep.options?.map((opt, idx) => {
@@ -427,7 +427,7 @@ export function LessonScreen() {
           <View style={styles.quizBlock}>
             <View style={styles.promptRow}>
               <Text style={styles.quizPrompt}>{currentStep.prompt}</Text>
-              <SpeakButton text={currentStep.prompt} language={lang} size="sm" />
+              <SpeakButton text={currentStep.speakText ?? currentStep.correctAnswer} language={lang} size="sm" />
             </View>
             {currentStep.hint && <Text style={styles.hintText}>💡 {currentStep.hint}</Text>}
             <TextInput

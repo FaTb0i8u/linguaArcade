@@ -1,5 +1,5 @@
 /**
- * Main tab navigator — Home, Lessons, Arcade, Profile.
+ * Main tab navigator — Home, Lessons, Arcade, Pet, Profile.
  */
 
 import React from 'react';
@@ -10,6 +10,7 @@ import { Colors, FontSizes } from '../config/theme';
 import { HomeScreen } from '../screens/home/HomeScreen';
 import { LessonScreen } from '../screens/lessons/LessonScreen';
 import { ArcadeNavigator } from './ArcadeNavigator';
+import PetScreen from '../screens/pet/PetScreen';
 import { ProfileScreen } from '../screens/profile/ProfileScreen';
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
@@ -18,6 +19,7 @@ const icons: Record<keyof MainTabParamList, string> = {
   Home: '🏠',
   Lessons: '📚',
   Arcade: '🕹️',
+  Pet: '🐾',
   Profile: '👤',
 };
 
@@ -42,6 +44,7 @@ export function MainNavigator() {
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Lessons" component={LessonScreen} />
       <Tab.Screen name="Arcade" component={ArcadeNavigator} />
+      <Tab.Screen name="Pet" component={PetScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );
