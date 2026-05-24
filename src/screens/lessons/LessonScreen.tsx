@@ -20,6 +20,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Colors, Spacing, FontSizes, FontWeights, BorderRadius, Shadows } from '../../config/theme';
 import { Card } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
+import { ExitButton } from '../../components/common/ExitButton';
 import { ProgressBar } from '../../components/common/ProgressBar';
 import { SpeakButton } from '../../components/common/SpeakButton';
 import { speak } from '../../utils/speech';
@@ -302,6 +303,9 @@ export function LessonScreen() {
 
   return (
     <View style={[styles.screen, { paddingTop: insets.top + Spacing.sm }]}>
+      {/* Exit button */}
+      <ExitButton onExit={() => setLesson(null)} confirmMessage="Are you sure you want to quit this lesson? Your progress will be lost." />
+
       {/* Progress */}
       <View style={styles.progressRow}>
         <ProgressBar progress={progress} color={Colors.primary} />

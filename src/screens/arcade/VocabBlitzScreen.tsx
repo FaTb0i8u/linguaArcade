@@ -23,6 +23,7 @@ import { useAuth } from '../../context/AuthContext';
 import { shuffle } from '../../utils/array';
 import { Colors, Spacing, FontSizes, FontWeights, BorderRadius } from '../../config/theme';
 import { Button } from '../../components/common/Button';
+import { ExitButton } from '../../components/common/ExitButton';
 import { ProgressBar } from '../../components/common/ProgressBar';
 import { SpeakButton } from '../../components/common/SpeakButton';
 import { speak } from '../../utils/speech';
@@ -233,6 +234,9 @@ export function VocabBlitzScreen({ navigation }: Props) {
 
   return (
     <View style={[styles.screen, { paddingTop: insets.top + Spacing.sm }]}>
+      {/* Exit button */}
+      <ExitButton onExit={() => navigation.goBack()} />
+
       {/* HUD */}
       <View style={styles.hud}>
         <View style={styles.livesRow}>

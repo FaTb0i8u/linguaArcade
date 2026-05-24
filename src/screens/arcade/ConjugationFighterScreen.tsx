@@ -17,9 +17,10 @@ import { useAuth } from '../../context/AuthContext';
 import { shuffle } from '../../utils/array';
 import { Colors, Spacing, FontSizes, FontWeights, BorderRadius, Shadows } from '../../config/theme';
 import { Button } from '../../components/common/Button';
+import { ExitButton } from '../../components/common/ExitButton';
 import { speak } from '../../utils/speech';
 import { HealthBar } from '../../components/games/HealthBar';
-import { FighterCharacter } from '../../components/games/FighterCharacter';
+import { FighterCharacter, FighterCharacterId } from '../../components/games/FighterCharacter';
 import { Timer } from '../../components/games/Timer';
 import { ScoreDisplay } from '../../components/games/ScoreDisplay';
 import { GAME_TIMERS, XP } from '../../config/constants';
@@ -30,6 +31,13 @@ type Props = NativeStackScreenProps<ArcadeStackParamList, 'ConjugationFighter'>;
 const MAX_HP = 100;
 const DAMAGE = 20;
 const ROUNDS = GAME_TIMERS.FIGHTER_ROUNDS;
+const ALL_CHARACTERS: FighterCharacterId[] = ['maiden', 'assassin', 'fighter'];
+
+/** Pick two different random characters */
+function randomCharacters(): [FighterCharacterId, FighterCharacterId] {
+  const shuffled = [...ALL_CHARACTERS].sort(() => Math.random() - 0.5);
+  return [shuffled[0], shuffled[1]];
+}
 
 type Phase = 'ready' | 'fighting' | 'results';
 type FighterAction = 'idle' | 'attack' | 'defend' | 'hurt' | 'victory' | 'defeat';
@@ -78,6 +86,8 @@ export function ConjugationFighterScreen({ navigation }: Props) {
   const [phase, setPhase] = useState<Phase>('ready');
   const [rounds, setRounds] = useState<Round[]>([]);
   const [roundIdx, setRoundIdx] = useState(0);
+  const [playerChar, setPlayerChar] = useState<FighterCharacterId>('maiden');
+  const [enemyChar, setEnemyChar] = useState<FighterCharacterId>('assassin');
   const [playerHP, setPlayerHP] = useState(MAX_HP);
   const [enemyHP, setEnemyHP] = useState(MAX_HP);
   const [playerAction, setPlayerAction] = useState<FighterAction>('idle');
@@ -121,6 +131,9 @@ export function ConjugationFighterScreen({ navigation }: Props) {
   }, [playerX, enemyX]);
 
   const initGame = useCallback(() => {
+    const [p, e] = randomCharacters();
+    setPlayerChar(p);
+    setEnemyChar(e);
     setRounds(buildRounds(content.conjugations, ROUNDS));
     setRoundIdx(0);
     setPlayerHP(MAX_HP);
@@ -255,6 +268,9 @@ export function ConjugationFighterScreen({ navigation }: Props) {
 
   return (
     <View style={[styles.screen, { paddingTop: insets.top + Spacing.xs }]}>
+      {/* Exit button */}
+      {phase === 'fighting' && <ExitButton onExit={() => navigation.goBack()} />}
+
       {/* Health bars */}
       <View style={styles.healthRow}>
         <HealthBar current={playerHP} max={MAX_HP} label="You" side="left" />
@@ -265,10 +281,10 @@ export function ConjugationFighterScreen({ navigation }: Props) {
       {/* Characters */}
       <View style={styles.arena}>
         <Animated.View style={{ transform: [{ translateX: playerX }] }}>
-          <FighterCharacter name="You" character="maiden" action={playerAction} side="left" isPlayer />
+          <FighterCharacter name="You" character={playerChar} action={playerAction} side="left" isPlayer />
         </Animated.View>
         <Animated.View style={{ transform: [{ translateX: enemyX }] }}>
-          <FighterCharacter name="Enemy" character="assassin" action={enemyAction} side="right" isPlayer={false} />
+          <FighterCharacter name="Enemy" character={enemyChar} action={enemyAction} side="right" isPlayer={false} />
         </Animated.View>
       </View>
 

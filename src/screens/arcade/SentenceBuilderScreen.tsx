@@ -16,6 +16,7 @@ import { useAuth } from '../../context/AuthContext';
 import { shuffle } from '../../utils/array';
 import { Colors, Spacing, FontSizes, FontWeights, BorderRadius, Shadows } from '../../config/theme';
 import { Button } from '../../components/common/Button';
+import { ExitButton } from '../../components/common/ExitButton';
 import { WordTile } from '../../components/games/WordTile';
 import { ScoreDisplay } from '../../components/games/ScoreDisplay';
 import { ProgressBar } from '../../components/common/ProgressBar';
@@ -184,6 +185,9 @@ export function SentenceBuilderScreen({ navigation }: Props) {
 
   return (
     <View style={[styles.screen, { paddingTop: insets.top + Spacing.sm }]}>
+      {/* Exit button */}
+      <ExitButton onExit={() => navigation.goBack()} />
+
       {/* HUD */}
       <View style={styles.hudRow}>
         <ScoreDisplay score={score} />
