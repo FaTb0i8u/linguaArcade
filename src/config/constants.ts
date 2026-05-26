@@ -25,12 +25,25 @@ export const XP = {
 } as const;
 // ── Coin rewards ────────────────────────────────────────────────────────────
 export const COINS = {
-  LESSON_COMPLETE: 20,
-  GAME_WIN: 30,
-  GAME_PARTICIPATION: 10,
-  PERFECT_ROUND: 50,
-  STREAK_BONUS_PER_DAY: 5,   // bonus coins per streak day (capped at 7)
+  LESSON_COMPLETE: 10,
+  LESSON_PERFECT_BONUS: 15,     // bonus on top of LESSON_COMPLETE for 100%
+  // Arcade: tiered by accuracy %
+  GAME_TIER_PERFECT: 25,        // 100% accuracy
+  GAME_TIER_GREAT: 18,          // ≥80%
+  GAME_TIER_GOOD: 12,           // ≥60%
+  GAME_TIER_OK: 6,              // ≥40%
+  GAME_TIER_POOR: 2,            // <40%
+  STREAK_BONUS_PER_DAY: 5,     // bonus coins per streak day (capped at 7)
 } as const;
+
+/** Calculate coin reward for a game based on accuracy (0–1) */
+export function getGameCoinReward(accuracy: number): number {
+  if (accuracy >= 1) return COINS.GAME_TIER_PERFECT;
+  if (accuracy >= 0.8) return COINS.GAME_TIER_GREAT;
+  if (accuracy >= 0.6) return COINS.GAME_TIER_GOOD;
+  if (accuracy >= 0.4) return COINS.GAME_TIER_OK;
+  return COINS.GAME_TIER_POOR;
+}
 
 // ── Pet system ──────────────────────────────────────────────────────────────
 export const PET = {

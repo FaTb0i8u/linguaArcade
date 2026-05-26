@@ -8,7 +8,7 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { ProgressService } from '../services/progress';
 import { StorageService } from '../services/storage';
-import { STORAGE_KEYS, COINS } from '../config/constants';
+import { STORAGE_KEYS, COINS, getGameCoinReward } from '../config/constants';
 import { useAuth } from './AuthContext';
 import type { UserProgress, GameSessionResult, GameModeType, UserProfile, AnsweredItem } from '../types';
 
@@ -52,14 +52,11 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   const recordGame = useCallback(async (result: GameSessionResult) => {
     if (!user) return;
     const updated = await ProgressService.recordGameSession(user.id, result);
-    // Award coins for game
+    // Award coins based on accuracy tier
     const accuracy = result.totalQuestions > 0
       ? result.correctAnswers / result.totalQuestions
       : 0;
-    const won = accuracy >= 0.7; // 70%+ is a "win"
-    const coinReward = won
-      ? (accuracy === 1 ? COINS.GAME_WIN + COINS.PERFECT_ROUND : COINS.GAME_WIN)
-      : COINS.GAME_PARTICIPATION;
+    const coinReward = getGameCoinReward(accuracy);
     updated.coins = (updated.coins ?? 0) + coinReward;
     await ProgressService.save(updated);
     setProgress(updated);
@@ -81,7 +78,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     const updated = await ProgressService.recordLessonComplete(user.id, correct, total, items ?? []);
     // Award coins for lesson
     const coinReward = correct === total
-      ? COINS.LESSON_COMPLETE + COINS.PERFECT_ROUND
+      ? COINS.LESSON_COMPLETE + COINS.LESSON_PERFECT_BONUS
       : COINS.LESSON_COMPLETE;
     updated.coins = (updated.coins ?? 0) + coinReward;
     await ProgressService.save(updated);

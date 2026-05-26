@@ -10,11 +10,13 @@ import React, { useState } from 'react';
 import {
   View,
   Text,
+  Image,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
   Animated,
   Alert,
+  ImageSourcePropType,
 } from 'react-native';
 import { usePet, getHungerState } from '../../context/PetContext';
 import { useProgress } from '../../context/ProgressContext';
@@ -22,6 +24,68 @@ import { PET_TYPES, FOOD_ITEMS, PET } from '../../config/constants';
 import { Colors, Spacing, BorderRadius, FontSizes, FontWeights, Shadows } from '../../config/theme';
 import { ProgressBar } from '../../components/common/ProgressBar';
 import type { PetTypeId, FoodItemId } from '../../types';
+
+// ── Pet sprite map (hunger state → image) ────────────────────────
+type HungerKey = 'full' | 'content' | 'hungry' | 'very-hungry' | 'starving';
+
+const petSprites: Record<PetTypeId, Record<HungerKey, ImageSourcePropType>> = {
+  cat: {
+    full: require('../../../assets/pets/cat-full.png'),
+    content: require('../../../assets/pets/cat-content.png'),
+    hungry: require('../../../assets/pets/cat-hungry.png'),
+    'very-hungry': require('../../../assets/pets/cat-very-hungry.png'),
+    starving: require('../../../assets/pets/cat-starving.png'),
+  },
+  dog: {
+    full: require('../../../assets/pets/dog-full.png'),
+    content: require('../../../assets/pets/dog-content.png'),
+    hungry: require('../../../assets/pets/dog-hungry.png'),
+    'very-hungry': require('../../../assets/pets/dog-very-hungry.png'),
+    starving: require('../../../assets/pets/dog-starving.png'),
+  },
+  rabbit: {
+    full: require('../../../assets/pets/rabbit-full.png'),
+    content: require('../../../assets/pets/rabbit-content.png'),
+    hungry: require('../../../assets/pets/rabbit-hungry.png'),
+    'very-hungry': require('../../../assets/pets/rabbit-very-hungry.png'),
+    starving: require('../../../assets/pets/rabbit-starving.png'),
+  },
+  fox: {
+    full: require('../../../assets/pets/fox-full.png'),
+    content: require('../../../assets/pets/fox-content.png'),
+    hungry: require('../../../assets/pets/fox-hungry.png'),
+    'very-hungry': require('../../../assets/pets/fox-very-hungry.png'),
+    starving: require('../../../assets/pets/fox-starving.png'),
+  },
+  panda: {
+    full: require('../../../assets/pets/panda-full.png'),
+    content: require('../../../assets/pets/panda-content.png'),
+    hungry: require('../../../assets/pets/panda-hungry.png'),
+    'very-hungry': require('../../../assets/pets/panda-very-hungry.png'),
+    starving: require('../../../assets/pets/panda-starving.png'),
+  },
+};
+
+/** Map mood to the sprite key */
+function moodToSpriteKey(mood: string): HungerKey {
+  switch (mood) {
+    case 'ecstatic': return 'full';
+    case 'happy': return 'full';
+    case 'content': return 'content';
+    case 'hungry': return 'hungry';
+    case 'starving': return 'starving';
+    default: return 'content';
+  }
+}
+
+/** Get the hunger-state sprite key from the numeric hunger value */
+function hungerToSpriteKey(hunger: number): HungerKey {
+  if (hunger >= 80) return 'full';
+  if (hunger >= 60) return 'content';
+  if (hunger >= 40) return 'hungry';
+  if (hunger >= 20) return 'very-hungry';
+  return 'starving';
+}
 
 // ── Adoption Screen ──────────────────────────────────────────────
 
@@ -46,7 +110,11 @@ function AdoptionScreen({ onAdopt }: { onAdopt: (typeId: PetTypeId, name: string
             ]}
             onPress={() => setSelected(pet.id as PetTypeId)}
           >
-            <Text style={styles.petOptionEmoji}>{pet.emoji}</Text>
+            <Image
+              source={petSprites[pet.id as PetTypeId].full}
+              style={styles.petOptionImage}
+              resizeMode="contain"
+            />
             <Text style={styles.petOptionName}>{pet.name}</Text>
             <Text style={styles.petOptionDesc}>{pet.description}</Text>
           </TouchableOpacity>
@@ -85,18 +153,20 @@ export default function PetScreen() {
   const hungerState = getHungerState(currentHunger);
   const coins = progress?.coins ?? 0;
 
-  // Get the pet emoji based on mood
-  const getPetDisplay = () => {
+  // Get the sprite for current hunger level
+  const spriteKey = hungerToSpriteKey(currentHunger);
+  const petImage = pet ? petSprites[pet.typeId]?.[spriteKey] : null;
+
+  // Background color based on mood
+  const getBgColor = () => {
     switch (mood) {
-      case 'ecstatic': return { emoji: petType?.emoji ?? '🐱', bg: '#E8F8F5' };
-      case 'happy': return { emoji: petType?.emoji ?? '🐱', bg: '#EBF5FB' };
-      case 'content': return { emoji: petType?.emoji ?? '🐱', bg: '#FEF9E7' };
-      case 'hungry': return { emoji: '😿', bg: '#FDEDEC' };
-      case 'starving': return { emoji: '🥺', bg: '#F9EBEA' };
+      case 'ecstatic': return '#E8F8F5';
+      case 'happy': return '#EBF5FB';
+      case 'content': return '#FEF9E7';
+      case 'hungry': return '#FDEDEC';
+      case 'starving': return '#F9EBEA';
     }
   };
-
-  const display = getPetDisplay();
 
   const handleFeed = async (foodId: FoodItemId) => {
     const food = FOOD_ITEMS.find(f => f.id === foodId);
@@ -137,12 +207,12 @@ export default function PetScreen() {
       </View>
 
       {/* Pet display area */}
-      <View style={[styles.petArea, { backgroundColor: display.bg }]}>
-        <Animated.Text
-          style={[styles.petEmoji, { transform: [{ scale: feedingAnimation }] }]}
-        >
-          {display.emoji}
-        </Animated.Text>
+      <View style={[styles.petArea, { backgroundColor: getBgColor() }]}>
+        <Animated.View style={{ transform: [{ scale: feedingAnimation }] }}>
+          {petImage && (
+            <Image source={petImage} style={styles.petImage} resizeMode="contain" />
+          )}
+        </Animated.View>
         <Text style={styles.petName}>{pet?.name}</Text>
         <Text style={styles.moodLabel}>{hungerState.emoji} {hungerState.label}</Text>
       </View>
@@ -261,8 +331,9 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.lg,
     ...Shadows.sm,
   },
-  petEmoji: {
-    fontSize: 80,
+  petImage: {
+    width: 150,
+    height: 150,
     marginBottom: Spacing.sm,
   },
   petName: {
@@ -429,8 +500,9 @@ const styles = StyleSheet.create({
     borderColor: Colors.primary,
     backgroundColor: Colors.primaryLight + '15',
   },
-  petOptionEmoji: {
-    fontSize: 48,
+  petOptionImage: {
+    width: 80,
+    height: 80,
     marginBottom: Spacing.sm,
   },
   petOptionName: {
