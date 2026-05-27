@@ -10,7 +10,7 @@ import { View, Image, Text, StyleSheet, ImageSourcePropType } from 'react-native
 import { Colors, FontSizes, FontWeights, Spacing, BorderRadius } from '../../config/theme';
 
 export type FighterAction = 'idle' | 'attack' | 'defend' | 'hurt' | 'victory' | 'defeat';
-export type FighterCharacterId = 'maiden' | 'assassin' | 'fighter';
+export type FighterCharacterId = 'maiden' | 'assassin' | 'fighter' | 'rubber-chicken' | 'fried-chicken';
 
 interface FighterCharacterProps {
   name: string;
@@ -42,6 +42,20 @@ const sprites: Record<FighterCharacterId, Record<string, ImageSourcePropType>> =
     hurt: require('../../../assets/fighters/fighter-hurt.png'),
     victory: require('../../../assets/fighters/fighter-victory.png'),
     defeat: require('../../../assets/fighters/fighter-defeat.png'),
+  },
+  'rubber-chicken': {
+    idle: require('../../../assets/fighters/rubber-chicken-idle.png'),
+    attack: require('../../../assets/fighters/rubber-chicken-attack.png'),
+    hurt: require('../../../assets/fighters/rubber-chicken-hurt.png'),
+    victory: require('../../../assets/fighters/rubber-chicken-victory.png'),
+    defeat: require('../../../assets/fighters/rubber-chicken-defeat.png'),
+  },
+  'fried-chicken': {
+    idle: require('../../../assets/fighters/fried-chicken-idle.png'),
+    attack: require('../../../assets/fighters/fried-chicken-attack.png'),
+    hurt: require('../../../assets/fighters/fried-chicken-hurt.png'),
+    victory: require('../../../assets/fighters/fried-chicken-victory.png'),
+    defeat: require('../../../assets/fighters/fried-chicken-defeat.png'),
   },
 };
 

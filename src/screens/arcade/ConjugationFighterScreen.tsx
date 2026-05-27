@@ -31,7 +31,7 @@ type Props = NativeStackScreenProps<ArcadeStackParamList, 'ConjugationFighter'>;
 const MAX_HP = 100;
 const DAMAGE = 20;
 const ROUNDS = GAME_TIMERS.FIGHTER_ROUNDS;
-const ALL_CHARACTERS: FighterCharacterId[] = ['maiden', 'assassin', 'fighter'];
+const ALL_CHARACTERS: FighterCharacterId[] = ['maiden', 'assassin', 'fighter', 'rubber-chicken', 'fried-chicken'];
 
 /** Pick two different random characters */
 function randomCharacters(): [FighterCharacterId, FighterCharacterId] {
