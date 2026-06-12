@@ -47,29 +47,50 @@ interface Round {
   subject: string;
   correctAnswer: string;
   options: string[];
+  prompt: string;
 }
 
-function buildRounds(conjugations: ConjugationEntry[], count: number): Round[] {
+const MEASURE_WORD_LANGUAGES = ['zh'];
+
+function buildRounds(conjugations: ConjugationEntry[], count: number, lang: string): Round[] {
   const rounds: Round[] = [];
+  const isMeasureWord = MEASURE_WORD_LANGUAGES.includes(lang);
 
   for (let i = 0; i < count; i++) {
     const verb = conjugations[Math.floor(Math.random() * conjugations.length)];
     const subjects = Object.keys(verb.conjugations);
     const subject = subjects[Math.floor(Math.random() * subjects.length)];
-    const correct = verb.conjugations[subject];
 
-    // Distractors are OTHER conjugations of the SAME verb
-    const sameVerbForms = Object.entries(verb.conjugations)
-      .filter(([key]) => key !== subject)
-      .map(([, val]) => val);
-    const distractors = shuffle(sameVerbForms).slice(0, 3);
+    if (isMeasureWord) {
+      // Chinese: correct = measure word character, distractors = other measure word characters
+      const correct = verb.infinitive;
+      const nounLabel = verb.subjectLabels[subject] ?? subject;
+      const distractors = shuffle(
+        conjugations.filter(e => e.id !== verb.id).map(e => e.infinitive)
+      ).slice(0, 3);
 
-    rounds.push({
-      verb,
-      subject,
-      correctAnswer: correct,
-      options: shuffle([correct, ...distractors]),
-    });
+      rounds.push({
+        verb,
+        subject,
+        correctAnswer: correct,
+        options: shuffle([correct, ...distractors]),
+        prompt: `Which measure word (量詞) goes with "${nounLabel}"?`,
+      });
+    } else {
+      const correct = verb.conjugations[subject];
+      const sameVerbForms = Object.entries(verb.conjugations)
+        .filter(([key]) => key !== subject)
+        .map(([, val]) => val);
+      const distractors = shuffle(sameVerbForms).slice(0, 3);
+
+      rounds.push({
+        verb,
+        subject,
+        correctAnswer: correct,
+        options: shuffle([correct, ...distractors]),
+        prompt: `Conjugate "${verb.infinitive}" for ${verb.subjectLabels[subject] ?? subject}:`,
+      });
+    }
   }
   return rounds;
 }
@@ -134,7 +155,7 @@ export function ConjugationFighterScreen({ navigation }: Props) {
     const [p, e] = randomCharacters();
     setPlayerChar(p);
     setEnemyChar(e);
-    setRounds(buildRounds(content.conjugations, ROUNDS));
+    setRounds(buildRounds(content.conjugations, ROUNDS, lang));
     setRoundIdx(0);
     setPlayerHP(MAX_HP);
     setEnemyHP(MAX_HP);
@@ -311,13 +332,10 @@ export function ConjugationFighterScreen({ navigation }: Props) {
       {phase === 'fighting' && currentRound && (
         <>
           <View style={styles.promptArea}>
-            <Text style={styles.promptLabel}>Conjugate ({tenseLabel}):</Text>
-            <Text style={styles.promptVerb}>
-              {currentRound.verb.infinitive} ({currentRound.verb.translation})
-            </Text>
-            <Text style={styles.promptSubject}>
-              for → <Text style={styles.subjectHighlight}>{currentRound.verb.subjectLabels[currentRound.subject] ?? currentRound.subject}</Text>
-            </Text>
+            <Text style={styles.promptVerb}>{currentRound.prompt}</Text>
+            {tenseLabel ? (
+              <Text style={styles.promptLabel}>({tenseLabel})</Text>
+            ) : null}
           </View>
 
           <View style={styles.optionsGrid}>

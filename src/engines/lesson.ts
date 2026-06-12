@@ -56,9 +56,66 @@ const CATEGORY_ORDER: string[] = [
   'questions',
 ];
 
-// ──────────────────────────────────────────────────────────────
-// Public API
-// ──────────────────────────────────────────────────────────────
+/**
+ * Languages that use measure words / classifiers instead of verb conjugation.
+ * For these, the "conjugation" quiz tests measure word selection, not verb forms.
+ */
+const MEASURE_WORD_LANGUAGES: SupportedLanguage[] = ['zh'];
+
+function isMeasureWordLanguage(lang: SupportedLanguage): boolean {
+  return MEASURE_WORD_LANGUAGES.includes(lang);
+}
+
+/**
+ * Build measure-word quiz steps for Chinese and similar languages.
+ * Question: "Which measure word goes with '[noun]'?"
+ * Correct: the entry's infinitive (e.g., 張)
+ * Distractors: other entries' infinitives (e.g., 本, 隻, 條)
+ */
+function buildMeasureWordQuizSteps(
+  entry: ConjugationEntry,
+  allEntries: ConjugationEntry[],
+): LessonStep[] {
+  const steps: LessonStep[] = [];
+  const subjects = Object.keys(entry.conjugations);
+  const otherMeasureWords = allEntries
+    .filter(e => e.id !== entry.id)
+    .map(e => e.infinitive);
+
+  for (const subj of shuffle(subjects).slice(0, 2)) {
+    const correct = entry.infinitive;
+    const nounLabel = entry.subjectLabels[subj] ?? subj;
+    const distractors = shuffle(otherMeasureWords).slice(0, 3);
+
+    steps.push({
+      type: 'multiple_choice',
+      contentId: entry.id,
+      contentType: 'conjugation',
+      prompt: `Which measure word (量詞) goes with "${nounLabel}"?`,
+      correctAnswer: correct,
+      speakText: correct,
+      options: shuffle([correct, ...distractors]),
+      hint: `${entry.infinitive} is used for: ${entry.translation}`,
+    });
+  }
+
+  // Type-answer: type the measure word for a random noun
+  const subj = subjects[Math.floor(Math.random() * subjects.length)];
+  const nounLabel = entry.subjectLabels[subj] ?? subj;
+  steps.push({
+    type: 'type_answer',
+    contentId: entry.id,
+    contentType: 'conjugation',
+    prompt: `Type the measure word (量詞) for "${nounLabel}":`,
+    correctAnswer: entry.infinitive,
+    speakText: entry.infinitive,
+    hint: `Used for: ${entry.translation}`,
+  });
+
+  return steps;
+}
+
+
 
 export const LessonEngine = {
   /**
@@ -180,41 +237,49 @@ export const LessonEngine = {
 
     // ─ Phase 3: Quiz — multiple choice on random verbs/subjects ─
     const quizVerbs = shuffle(exampleEntries);
-    for (const verb of quizVerbs) {
-      const subj = subjects[Math.floor(Math.random() * subjects.length)];
-      const correct = verb.conjugations[subj];
-      const label = pattern.subjectLabels[subj] ?? subj;
 
-      // Distractors: other conjugations of the same verb
-      const sameVerbForms = Object.entries(verb.conjugations)
-        .filter(([key]) => key !== subj)
-        .map(([, val]) => val);
-      const distractors = shuffle(sameVerbForms).slice(0, 3);
+    if (isMeasureWordLanguage(lang)) {
+      // Chinese: quiz measure word selection, not conjugation forms
+      for (const entry of quizVerbs) {
+        steps.push(...buildMeasureWordQuizSteps(entry, content.conjugations));
+      }
+    } else {
+      for (const verb of quizVerbs) {
+        const subj = subjects[Math.floor(Math.random() * subjects.length)];
+        const correct = verb.conjugations[subj];
+        const label = pattern.subjectLabels[subj] ?? subj;
 
-      steps.push({
-        type: 'multiple_choice',
-        contentId: verb.id,
-        contentType: 'conjugation',
-        prompt: `Conjugate "${verb.infinitive}" for ${label}:`,
-        correctAnswer: correct,
-        speakText: correct,
-        options: shuffle([correct, ...distractors]),
-      });
-    }
+        // Distractors: other conjugations of the same verb
+        const sameVerbForms = Object.entries(verb.conjugations)
+          .filter(([key]) => key !== subj)
+          .map(([, val]) => val);
+        const distractors = shuffle(sameVerbForms).slice(0, 3);
 
-    // ─ Phase 4: Type-answer round for 3 random forms ───────────
-    for (const verb of pickRandom(exampleEntries, Math.min(3, exampleEntries.length))) {
-      const subj = subjects[Math.floor(Math.random() * subjects.length)];
-      const label = pattern.subjectLabels[subj] ?? subj;
-      steps.push({
-        type: 'type_answer',
-        contentId: verb.id,
-        contentType: 'conjugation',
-        prompt: `Type the "${verb.infinitive}" conjugation for ${label}:`,
-        correctAnswer: verb.conjugations[subj],
-        speakText: verb.conjugations[subj],
-        hint: `Remember the ${pattern.verbEnding} endings: ${label} → ${pattern.endings[subj]}`,
-      });
+        steps.push({
+          type: 'multiple_choice',
+          contentId: verb.id,
+          contentType: 'conjugation',
+          prompt: `Conjugate "${verb.infinitive}" for ${label}:`,
+          correctAnswer: correct,
+          speakText: correct,
+          options: shuffle([correct, ...distractors]),
+        });
+      }
+
+      // ─ Phase 4: Type-answer round for 3 random forms ─────────
+      for (const verb of pickRandom(exampleEntries, Math.min(3, exampleEntries.length))) {
+        const subj = subjects[Math.floor(Math.random() * subjects.length)];
+        const label = pattern.subjectLabels[subj] ?? subj;
+        steps.push({
+          type: 'type_answer',
+          contentId: verb.id,
+          contentType: 'conjugation',
+          prompt: `Type the "${verb.infinitive}" conjugation for ${label}:`,
+          correctAnswer: verb.conjugations[subj],
+          speakText: verb.conjugations[subj],
+          hint: `Remember the ${pattern.verbEnding} endings: ${label} → ${pattern.endings[subj]}`,
+        });
+      }
     }
 
     return {
@@ -258,36 +323,41 @@ export const LessonEngine = {
       subjectLabels: entry.subjectLabels,
     });
 
-    // Quiz each subject with multiple choice (same-verb distractors)
-    for (const subj of shuffle(subjects)) {
-      const correct = entry.conjugations[subj];
-      const sameVerbForms = Object.entries(entry.conjugations)
-        .filter(([key]) => key !== subj)
-        .map(([, val]) => val);
-      const distractors = shuffle(sameVerbForms).slice(0, 3);
+    // Quiz each subject with multiple choice
+    if (isMeasureWordLanguage(lang)) {
+      // Chinese: test measure word selection with cross-entry distractors
+      steps.push(...buildMeasureWordQuizSteps(entry, content.conjugations));
+    } else {
+      for (const subj of shuffle(subjects)) {
+        const correct = entry.conjugations[subj];
+        const sameVerbForms = Object.entries(entry.conjugations)
+          .filter(([key]) => key !== subj)
+          .map(([, val]) => val);
+        const distractors = shuffle(sameVerbForms).slice(0, 3);
 
-      steps.push({
-        type: 'multiple_choice',
-        contentId: entry.id,
-        contentType: 'conjugation',
-        prompt: `Conjugate "${entry.infinitive}" for ${labels[subj] ?? subj}:`,
-        correctAnswer: correct,
-        speakText: correct,
-        options: shuffle([correct, ...distractors]),
-      });
-    }
+        steps.push({
+          type: 'multiple_choice',
+          contentId: entry.id,
+          contentType: 'conjugation',
+          prompt: `Conjugate "${entry.infinitive}" for ${labels[subj] ?? subj}:`,
+          correctAnswer: correct,
+          speakText: correct,
+          options: shuffle([correct, ...distractors]),
+        });
+      }
 
-    // Type-answer round for 3 random subjects
-    for (const subj of pickRandom(subjects, 3)) {
-      steps.push({
-        type: 'type_answer',
-        contentId: entry.id,
-        contentType: 'conjugation',
-        prompt: `Type the "${entry.infinitive}" form for ${labels[subj] ?? subj}:`,
-        correctAnswer: entry.conjugations[subj],
-        speakText: entry.conjugations[subj],
-        hint: `${entry.translation} — ${entry.tense} tense (irregular!)`,
-      });
+      // Type-answer round for 3 random subjects
+      for (const subj of pickRandom(subjects, 3)) {
+        steps.push({
+          type: 'type_answer',
+          contentId: entry.id,
+          contentType: 'conjugation',
+          prompt: `Type the "${entry.infinitive}" form for ${labels[subj] ?? subj}:`,
+          correctAnswer: entry.conjugations[subj],
+          speakText: entry.conjugations[subj],
+          hint: `${entry.translation} — ${entry.tense} tense (irregular!)`,
+        });
+      }
     }
 
     return {
@@ -341,6 +411,95 @@ export const LessonEngine = {
     } catch {
       return false;
     }
+  },
+
+  // ── Cumulative Review ──────────────────────────────────────
+
+  /**
+   * Build a cumulative lesson that draws from multiple vocab categories,
+   * producing a longer mixed assessment (default 20 steps).
+   *
+   * This is distinct from SRS review — it deliberately samples from all
+   * available categories so learners see breadth rather than just due items.
+   */
+  buildCumulativeLesson(
+    lang: SupportedLanguage,
+    level: CEFRLevel,
+    categories: string[] = [],
+    maxWords: number = 10,
+  ): Lesson {
+    const content = getLevelContent(lang, level);
+    const meta = getLanguageMeta(lang);
+
+    // Use provided categories or fall back to all available
+    const targetCategories = categories.length > 0
+      ? categories
+      : [...new Set(content.vocab.map(w => w.category))];
+
+    // Sample proportionally from each category
+    const wordsPerCategory = Math.max(1, Math.ceil(maxWords / targetCategories.length));
+    const selected: typeof content.vocab = [];
+    for (const cat of targetCategories) {
+      const pool = content.vocab.filter(w => w.category === cat);
+      selected.push(...pickRandom(pool, Math.min(wordsPerCategory, pool.length)));
+    }
+
+    const finalWords = shuffle(selected).slice(0, maxWords);
+    const steps: LessonStep[] = [];
+
+    // Multiple choice round: target → English
+    for (const word of shuffle(finalWords)) {
+      const distractors = generateDistractors(word.word, content.vocab.map(w => w.word));
+      steps.push({
+        type: 'multiple_choice',
+        contentId: word.id,
+        contentType: 'vocab',
+        prompt: `What is "${word.word}" in English?`,
+        correctAnswer: word.translation,
+        speakText: word.word,
+        options: shuffle([word.translation, ...generateDistractors(word.translation, content.vocab.map(w => w.translation))]),
+      });
+    }
+
+    // Multiple choice round: English → target
+    for (const word of shuffle(finalWords)) {
+      const distractors = generateDistractors(word.word, content.vocab.map(w => w.word));
+      steps.push({
+        type: 'multiple_choice',
+        contentId: word.id,
+        contentType: 'vocab',
+        prompt: `What is "${word.translation}" in ${meta.name}?`,
+        correctAnswer: word.word,
+        speakText: word.word,
+        options: shuffle([word.word, ...distractors]),
+      });
+    }
+
+    // Type-answer round: target → English
+    for (const word of shuffle(finalWords)) {
+      steps.push({
+        type: 'type_answer',
+        contentId: word.id,
+        contentType: 'vocab',
+        prompt: `Translate: "${word.word}"`,
+        correctAnswer: word.translation,
+        speakText: word.word,
+        hint: word.exampleSentence,
+      });
+    }
+
+    const categoryNames = targetCategories.map(c => c.charAt(0).toUpperCase() + c.slice(1)).join(', ');
+
+    return {
+      id: `lesson_cumulative_${lang}_${level}_${Date.now()}`,
+      language: lang,
+      level,
+      category: 'cumulative_review',
+      title: `📋 Unit Review`,
+      description: `Comprehensive review covering: ${categoryNames}`,
+      steps: shuffle(steps),
+      xpReward: 80,
+    };
   },
 
   // ── SRS-driven Review ──────────────────────────────────────

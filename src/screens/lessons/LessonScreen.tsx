@@ -42,6 +42,11 @@ export function LessonScreen() {
   const level = user?.currentLevel ?? 'A1';
   const meta = getLanguageMeta(lang);
   const showConjugations = LessonEngine.hasConjugations(lang, level);
+  const isMeasureWordLang = lang === 'zh';
+  const conjugationSectionTitle = isMeasureWordLang ? '量詞 Measure Words' : 'Conjugation Rules';
+  const conjugationSectionDesc = isMeasureWordLang
+    ? 'Learn the classifiers — Chinese nouns always pair with a specific measure word!'
+    : 'Learn the patterns — once you know the rule, you can conjugate any regular verb!';
 
   const [phase, setPhase] = useState<Phase>('select');
   const [lesson, setLesson] = useState<Lesson | null>(null);
@@ -137,6 +142,18 @@ export function LessonScreen() {
     setPhase('running');
   };
 
+  const startCumulativeLesson = () => {
+    const l = LessonEngine.buildCumulativeLesson(lang, level, categories, 10);
+    setLesson(l);
+    setStepIndex(0);
+    setScore(0); scoreRef.current = 0;
+    setTotalAnswered(0); totalRef.current = 0;
+    correctContentIds.current = new Set();
+    answeredItems.current = [];
+    stepStartTime.current = Date.now();
+    setPhase('running');
+  };
+
   const currentStep: LessonStep | null = lesson ? lesson.steps[stepIndex] ?? null : null;
 
   // Auto-speak the target word/prompt when introducing new vocabulary
@@ -221,8 +238,8 @@ export function LessonScreen() {
 
         {showConjugations && patterns.length > 0 && (
           <>
-            <Text style={styles.sectionTitle}>Conjugation Rules</Text>
-            <Text style={styles.sectionDesc}>Learn the patterns — once you know the rule, you can conjugate any regular verb!</Text>
+            <Text style={styles.sectionTitle}>{conjugationSectionTitle}</Text>
+            <Text style={styles.sectionDesc}>{conjugationSectionDesc}</Text>
             <View style={styles.grid}>
               {patterns.map((p) => (
                 <TouchableOpacity key={p.id} style={styles.categoryCard} onPress={() => startPatternLesson(p.id)}>
@@ -235,7 +252,7 @@ export function LessonScreen() {
           </>
         )}
 
-        {showConjugations && irregularVerbs.length > 0 && (
+        {showConjugations && !isMeasureWordLang && irregularVerbs.length > 0 && (
           <>
             <Text style={styles.sectionTitle}>Exceptions (Irregular Verbs)</Text>
             <Text style={styles.sectionDesc}>These verbs break the rules — they must be memorized individually.</Text>
@@ -273,6 +290,18 @@ export function LessonScreen() {
               <Text style={styles.catEmoji}>🧠</Text>
               <Text style={styles.catName}>Review Due Items</Text>
               <Text style={styles.catSub}>{dueReviewCount} item{dueReviewCount !== 1 ? 's' : ''} due</Text>
+            </TouchableOpacity>
+          </>
+        )}
+
+        {categories.length >= 2 && (
+          <>
+            <Text style={styles.sectionTitle}>📋 Unit Review</Text>
+            <Text style={styles.sectionDesc}>Test yourself across all vocabulary categories you've studied.</Text>
+            <TouchableOpacity style={[styles.categoryCard, styles.reviewCard]} onPress={startCumulativeLesson}>
+              <Text style={styles.catEmoji}>📋</Text>
+              <Text style={styles.catName}>Review All</Text>
+              <Text style={styles.catSub}>{categories.length} categories · 30 questions</Text>
             </TouchableOpacity>
           </>
         )}
@@ -317,7 +346,7 @@ export function LessonScreen() {
         {currentStep.type === 'teach_rule' && (
           <View style={styles.introBlock}>
             <Text style={styles.introEmoji}>📐</Text>
-            <Text style={styles.introLabel}>Conjugation Rule</Text>
+            <Text style={styles.introLabel}>{isMeasureWordLang ? 'Measure Word (量詞)' : 'Conjugation Rule'}</Text>
             <Text style={styles.ruleTitle}>{currentStep.prompt}</Text>
             {currentStep.hint && <Text style={styles.ruleDescription}>{currentStep.hint}</Text>}
 
